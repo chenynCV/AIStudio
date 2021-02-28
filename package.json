@@ -1,0 +1,22 @@
+{
+  "name": "ai-studio",
+  "version": "1.0.0",
+  "description": "AI Studio application",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/chenynCV/AIStudio",
+  "keywords": [
+    "Electron",
+    "quick",
+    "start",
+    "tutorial",
+    "demo"
+  ],
+  "author": "chenyanan",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "^11.3.0"
+  }
+}
