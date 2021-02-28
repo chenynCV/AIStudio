@@ -1,0 +1,18 @@
+.flexrow 
+{
+    display: flex;
+    flex-flow: row;
+    width: 100%;
+}
+
+.sbar{
+    border-left-width: 1px;
+}
+
+
+.mainblock
+{
+    width: 100%;
+    float: right;
+    background-color: rgb(29, 29, 29);
+}
