@@ -1,29 +1,48 @@
-#select-file {
-  float: center;
+.img-comp-container {
+  display: block;
+  position: relative;
   text-align: center;
-  font-size: 1.12em;
-  font-weight: 600;
   width: 90%;
-  height: 30%;
-  margin-top: 2%;
-  margin-bottom: 5%;
+  height: 100%;
   margin-left: 5%;
   margin-right: 5%;
-  padding: 10px;
-  border: 1px dashed rgb(255, 255, 255);
+  padding: 0px;
 }
 
-#image-canvas {
-  float: center;
+#select-file {
+  display: block;
   text-align: center;
   font-size: 1.12em;
   font-weight: 600;
   width: 90%;
-  height: 80%;
-  margin-top: 2%;
-  margin-bottom: 10%;
+  height: 320px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   margin-left: 5%;
   margin-right: 5%;
-  padding: 10px;
-  border: 1px dashed rgb(255, 255, 255);
+  padding: 120px;
+  border: 1px solid rgb(255, 255, 255);
+}
+
+.img-comp-img {
+  position: absolute;
+  display: block;
+  text-align: center;
+  width: auto;
+  height: 100%;
+  overflow: hidden;
+  margin: 0 auto;
+  vertical-align: middle;
+}
+
+.img-comp-slider {
+  position: absolute;
+  z-index: 9;
+  cursor: ew-resize;
+  /*set the appearance of the slider:*/
+  width: 40px;
+  height: 40px;
+  background-color: #2196F3;
+  opacity: 0.7;
+  border-radius: 50%;
 }

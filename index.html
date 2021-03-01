@@ -8,22 +8,39 @@
   <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
 
   <link rel="stylesheet" href="assets/css/global.css">
-  <link rel="stylesheet" href="assets/css/panel.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
   <link rel="stylesheet" href="assets/css/component.css">
 
   <title>AI Studio</title>
 </head>
 
 <body>
-  <div class="flexrow">
-    <div class="sbar"></div>
-    <div class="mainblock">
-      <input type="file" id="select-file" accept="image/*"></input>
-      <canvas id="image-canvas"></canvas>
+  <div class="container">
+    <div class="sidenav">
+      <a href="#">Link</a>
+      <a href="#">Link</a>
+      <a href="#">Link</a>
     </div>
-  </div>
 
+    <div class="sidepanel"></div>
+
+    <div class="workarea">
+      <div id="select-file">Drop or Click to Add</div>
+
+      <div id="img-comp-container" class="img-comp-container">
+        <div class="img-comp-img">
+          <img id="img-input" width="1280" height="720">
+        </div>
+        <div class="img-comp-img img-comp-overlay">
+          <img id="img-output" width="1280" height="720">
+        </div>
+      </div>
+    </div>
+
+    <div class="terminal"></div>
+  </div>
   <!-- You can also require other files to run in this process -->
+  <script src="./renderer-process/init.js"></script>
   <script src="./renderer-process/open-file.js"></script>
 </body>
 

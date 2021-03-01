@@ -112,6 +112,11 @@ kbd {
 }
 
 
+img {
+  display: block;
+  vertical-align: middle;
+}
+
 /* Utilities ---------------------------- */
 
 .u-avoid-clicks {
@@ -132,21 +137,6 @@ kbd {
 
 .no-display {
   display: none;
-}
-
-
-/* Content ------------------ */
-
-.content {
-  flex: 1;
-  position: relative;
-  overflow: hidden;
-  visibility: hidden;
-  opacity: 0;
-}
-.content.is-shown {
-  visibility: visible;;
-  opacity: 1;
 }
 
 
