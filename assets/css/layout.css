@@ -2,47 +2,41 @@
   display: grid;
   grid-template-areas:
       "sidenav sidepanel workarea"
-      "sidenav sidepanel workarea"
-      "sidenav sidepanel terminal";
-  grid-template-columns: 80px 400px 1fr;
-  grid-template-rows: 1fr 1fr 200px;
+      "sidenav sidepanel terminal"
+      "footer footer footer";
+  grid-template-columns: 60px 400px 1fr;
+  grid-template-rows: 1fr 240px 30px;
   grid-gap: 1px;
   flex: 1;
 }
 
-/* Style the side navigation */
 .sidenav {
   grid-area: sidenav;
+  position: relative;
   background-color: #111;
-}
-
-
-/* Side navigation links */
-.sidenav a {
-  color: white;
-  padding: 16px;
-  text-decoration: none;
-  display: block;
-}
-
-/* Change color on hover */
-.sidenav a:hover {
-  background-color: #ddd;
-  color: black;
 }
 
 .sidepanel {
   grid-area: sidepanel;
+  position: relative;
   background-color: rgb(38, 38, 38);
 }
 
-/* Style the content */
 .workarea {
   grid-area: workarea;
+  position: relative;
 }
 
 .terminal {
   grid-area: terminal;
+  position: relative;
   z-index: 9;
-  background-color: rgb(5, 5, 5);
+  border-top: 1px solid rgb(133, 133, 133);
+  overflow-y: auto;
+}
+
+.footer {
+  grid-area: footer;
+  position: relative;
+  background-color: rgb(20, 121, 238);
 }

@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; script-src 'self'">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self' 'unsafe-inline';">
   <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
 
   <link rel="stylesheet" href="assets/css/global.css">
@@ -16,16 +17,17 @@
 
 <body>
   <div class="container">
+
     <div class="sidenav">
-      <a href="#">Link</a>
-      <a href="#">Link</a>
-      <a href="#">Link</a>
+      <a id='hammer' class="active" href="#" style="background-image: url('assets/img/hammer-gray.svg');"></a>
+      <a id='model-zoo' href="#" style="background-image: url('assets/img/zoo-gray.svg');"></a>
+      <a id='setup' class="siadenav-bottom" href="#" style="background-image: url('assets/img/setup-gray.svg');"></a>
     </div>
 
     <div class="sidepanel"></div>
 
     <div class="workarea">
-      <div id="select-file">Drop or Click to Add</div>
+      <div id="select-file-diag">Click to Add Image</div>
 
       <div id="img-comp-container" class="img-comp-container">
         <div class="img-comp-img">
@@ -37,7 +39,12 @@
       </div>
     </div>
 
-    <div class="terminal"></div>
+    <div class="terminal">
+      <ul id='selected-files'></ul> 
+    </div>
+
+    <div class="footer"></div>
+
   </div>
   <!-- You can also require other files to run in this process -->
   <script src="./renderer-process/init.js"></script>

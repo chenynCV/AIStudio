@@ -77,28 +77,44 @@ function initComparisons() {
   }
 }
 
-document.getElementById("select-file").addEventListener('click', (event) => {
+document.getElementById("select-file-diag").addEventListener('click', (event) => {
   ipcRenderer.send('open-file-dialog')
 })
 
-ipcRenderer.on('selected-file-content', (event, data) => {
-  document.getElementById("select-file").style.display = "none"
-  document.getElementById("img-comp-container").style.display = ""
+function updateWorkarea() {
+  var length = document.getElementById("selected-files").getElementsByTagName("li").length
+  if (length > 0) {
+    document.getElementById("select-file-diag").style.display = "none"
+    document.getElementById("img-comp-container").style.display = ""
+  } else {
+    document.getElementById("select-file-diag").style.display = ""
+    document.getElementById("img-comp-container").style.display = "none"
+  }
+}
 
-  var img = new Image();
-  img.onload = function(){
-    console.log('height', img.height);
-    console.log('width', img.width);
-    x = document.getElementsByClassName("img-comp-img");
-    for (i = 0; i < x.length; i++) {
-      x[i].width = img.width
-      x[i].height = img.height
-    }
-  };
-  img.src = data; 
+ipcRenderer.on('selected-files', (event, filePaths) => {
+  var ul = document.getElementById("selected-files")
 
-  document.getElementById("img-input").src = './logs/000.png'
-  document.getElementById("img-output").src = './logs/000_mask.png'
+  for (i = 0; i < filePaths.length; i++) {
+    filePath = filePaths[i]
+    var li = document.createElement("line-" + i.toString())
+    li.innerHTML = `<li>${filePath}<span class="close">x</span></li>`
+    li.getElementsByClassName('close')[0].addEventListener("click", function () {
+      this.parentNode.parentNode.removeChild(this.parentNode);
+      updateWorkarea();
+    })
+    li.addEventListener("click", function () {
+      const regex = /\<li\>(.*)\<span/i
+      const found = this.innerHTML.match(regex)
+      if (found) {
+        console.log(found[1])
+        document.getElementById("img-input").src = found[1]
+        updateWorkarea()
+      }
+    })
+    ul.appendChild(li)
+  }
 
-  initComparisons()
+  document.getElementById("img-input").src = filePaths[0]
+  updateWorkarea()
 })
