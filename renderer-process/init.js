@@ -1,2 +1,4 @@
-document.getElementById("select-file-diag").style.display = ""
-document.getElementById("img-comp-container").style.display = "none"
+document.getElementById("welcome").style.display = ""
+document.getElementById("sidepanel").style.display = "none"
+document.getElementById("viewer").style.display = "none"
+document.getElementById("terminal").style.display = "none"

@@ -10,7 +10,9 @@
 
   <link rel="stylesheet" href="assets/css/global.css">
   <link rel="stylesheet" href="assets/css/layout.css">
-  <link rel="stylesheet" href="assets/css/component.css">
+  <link rel="stylesheet" href="assets/css/sidenav.css">
+  <link rel="stylesheet" href="assets/css/viewer.css">
+  <link rel="stylesheet" href="assets/css/terminal.css">
 
   <title>AI Studio</title>
 </head>
@@ -24,31 +26,30 @@
       <a id='setup' class="siadenav-bottom" href="#" style="background-image: url('assets/img/setup-gray.svg');"></a>
     </div>
 
-    <div class="sidepanel"></div>
+    <div class="welcome" id="welcome" style="background-image: url('assets/img/keyboard-gray.svg');">Click to
+      Start</div>
 
-    <div class="workarea">
-      <div id="select-file-diag">Click to Add Image</div>
+    <div class="sidepanel" id="sidepanel"></div>
 
-      <div id="img-comp-container" class="img-comp-container">
-        <div class="img-comp-img">
-          <img id="img-input" width="1280" height="720">
-        </div>
-        <div class="img-comp-img img-comp-overlay">
-          <img id="img-output" width="1280" height="720">
-        </div>
+    <div class="viewer" id="viewer">
+      <div class="img-container">
+        <div class="img-input"><img id="img-input"></div>
+        <div class="img-input img-overlay"><img id="img-output"></div>
       </div>
     </div>
 
-    <div class="terminal">
-      <ul id='selected-files'></ul> 
+    <div class="terminal" id="terminal">
+      <ul id='selected-files'></ul>
     </div>
 
-    <div class="footer"></div>
+    <div class="footer" id="footer"></div>
 
   </div>
+
   <!-- You can also require other files to run in this process -->
   <script src="./renderer-process/init.js"></script>
   <script src="./renderer-process/open-file.js"></script>
+
 </body>
 
 </html>

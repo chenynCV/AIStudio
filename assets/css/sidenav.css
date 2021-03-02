@@ -1,0 +1,27 @@
+/* Side navigation links */
+.sidenav a {
+  display: block;
+  text-align: center;
+  color: white;
+  height: 60px;
+  padding: 0px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 35px;
+}
+  
+/* Change color on hover */
+.sidenav a:hover {
+  background-color: #555;
+}
+
+/* Change color on active */
+.sidenav a.active {
+  border-left: 2px solid #ddd;
+}
+
+.siadenav-bottom {
+  position: absolute;
+  width: 60px;
+  bottom: 0px;
+}

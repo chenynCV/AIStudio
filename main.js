@@ -9,8 +9,9 @@ let mainWindow = null
 function createWindow () {
   const windowOptions = {
     width: 1080,
-    minWidth: 680,
-    height: 840, 
+    minWidth: 640,
+    height: 720,
+    minHeight: 640, 
     title: app.getName(),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
