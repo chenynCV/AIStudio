@@ -14,13 +14,13 @@
 .sidenav {
   grid-area: sidenav;
   position: relative;
-  background-color: #111;
+  background-color: #333;
 }
 
 .sidepanel {
   grid-area: sidepanel;
   position: relative;
-  background-color: rgb(38, 38, 38);
+  background-color: rgb(41, 41, 41);
 }
 
 .viewer {
@@ -28,10 +28,16 @@
   position: relative;
   min-width: 160px;
   min-height: 160px;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(32, 32, 32);
 }
 
 .terminal {
   grid-area: terminal;
+  position: relative;
+  z-index: 9;
+  background-color: rgb(32, 32, 32);
   border-top: 1px solid rgb(133, 133, 133);
   overflow-y: auto;
 }
@@ -51,6 +57,7 @@
   position: relative;
   text-align: center;
   padding: 0px;
+  background-color:rgb(32, 32, 32);
   background-position: center;
   background-repeat: no-repeat;
   background-size: 100px;

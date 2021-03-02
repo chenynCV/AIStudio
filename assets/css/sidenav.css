@@ -12,12 +12,12 @@
   
 /* Change color on hover */
 .sidenav a:hover {
-  background-color: #555;
+  background-color: #777;
 }
 
 /* Change color on active */
 .sidenav a.active {
-  border-left: 2px solid #ddd;
+  border-left: 2px solid #fff;
 }
 
 .siadenav-bottom {
