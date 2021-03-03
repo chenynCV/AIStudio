@@ -2,11 +2,12 @@
   display: grid;
   position: relative;
   grid-template-areas:
+    "sidenav sidepanel-bar viewer-bar"
     "sidenav sidepanel viewer"
     "sidenav sidepanel terminal"
     "footer footer footer";
   grid-template-columns: 60px 300px 1fr;
-  grid-template-rows: 1fr 240px 30px;
+  grid-template-rows: 30px 1fr 240px 30px;
   grid-gap: 1px;
   flex: auto;
 }
@@ -17,10 +18,22 @@
   background-color: #333;
 }
 
+.sidepanel-bar {
+  grid-area: sidepanel-bar;
+  position: relative;
+  background-color: rgb(41, 41, 41);
+}
+
 .sidepanel {
   grid-area: sidepanel;
   position: relative;
   background-color: rgb(41, 41, 41);
+}
+
+.viewer-bar {
+  grid-area: viewer-bar;
+  position: relative;
+  background-color: #333;
 }
 
 .viewer {
@@ -53,7 +66,7 @@
 
 .welcome {
   grid-column: 2 / span 2;
-  grid-row: 1 / span 2;
+  grid-row: 1 / span 3;
   position: relative;
   text-align: center;
   padding: 0px;

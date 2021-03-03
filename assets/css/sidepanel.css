@@ -1,0 +1,26 @@
+.sidepanel-title {
+    margin-top: 5px;
+    margin-left: 20px;
+    text-decoration: none;
+    color:#fff;
+}
+
+.sidepanel-folder tr td label {
+	display: block;
+	position: relative;
+	text-align: left;
+	width: 100%;
+	border-bottom: 1px solid #333;
+	font-weight: bold;
+	color: #fff;
+}
+
+.hammer-container {
+	margin-left: 20px;
+    text-decoration: none;
+    color:#fff;
+}
+
+.hammer-container table {
+	border-collapse: collapse; 
+}

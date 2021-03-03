@@ -1,13 +1,17 @@
-/* Side navigation links */
-.sidenav a {
+.sidenav-item {
   display: block;
-  text-align: center;
-  color: white;
   height: 60px;
   padding: 0px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: 35px;
+  border-left: 2px solid #333;
+}
+
+/* Side navigation links */
+.sidenav a {
+  text-align: center;
+  color: white;
 }
   
 /* Change color on hover */

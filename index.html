@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
   <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self' 'unsafe-inline';">
+    content="default-src 'self'; img-src 'self' data:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
   <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
 
   <link rel="stylesheet" href="assets/css/global.css">
@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="assets/css/sidenav.css">
   <link rel="stylesheet" href="assets/css/viewer.css">
   <link rel="stylesheet" href="assets/css/terminal.css">
+  <link rel="stylesheet" href="assets/css/sidepanel.css">
 
   <title>AI Studio</title>
 </head>
@@ -21,18 +22,59 @@
   <div class="container">
 
     <div class="sidenav">
-      <a id='hammer' class="active" href="#" style="background-image: url('assets/img/hammer-gray.svg');"></a>
-      <a id='model-zoo' href="#" style="background-image: url('assets/img/zoo-gray.svg');"></a>
-      <a id='setup' class="siadenav-bottom" href="#" style="background-image: url('assets/img/setup-gray.svg');"></a>
+      <a id='hammer' class="sidenav-item active" href="#"
+        style="background-image: url('assets/img/hammer-gray.svg');"></a>
+      <a id='model-zoo' class="sidenav-item" href="#" style="background-image: url('assets/img/zoo-gray.svg');"></a>
+      <a id='setup' class="sidenav-item siadenav-bottom" href="#"
+        style="background-image: url('assets/img/setup-gray.svg');"></a>
     </div>
 
     <div class="welcome" id="welcome" style="background-image: url('assets/img/keyboard-gray.svg');">Click to Start
       Creat</div>
 
-    <div class="sidepanel" id="sidepanel"></div>
+    <div class="sidepanel-bar" id="sidepanel-bar">
+      <div class='sidepanel-title' id='sidepanel-title'>HAMMER</div>
+    </div>
 
+    <div class="sidepanel" id="sidepanel">
+
+      <div class="hammer-container">
+        <table id='hammer-params-table'>
+          <tbody class="sidepanel-folder">
+            <tr>
+              <td colspan="2">
+                <label id="hammer-params-title">PARAMS</label>
+              </td>
+            </tr>
+          </tbody>
+          <tbody class="hide">
+            <tr>
+              <td>Australia</td>
+              <td>$7,685.00</td>
+            </tr>
+            <tr>
+              <td>Central America</td>
+              <td>$7,685.00</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <table id='hammer-info-table'>
+          <tbody class="sidepanel-folder">
+            <tr>
+              <td colspan="2">
+                <label id="hammer-info-title">INFO</label>
+              </td>
+            </tr>
+          </tbody>
+          <tbody class="hide"></tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <div class="viewer-bar" id="viewer-bar"></div>
     <div class="viewer" id="viewer">
-      <div class="viewer-bar"></div>
       <div class="img-container"><img class="img-center" id="img-input"></div>
     </div>
 
@@ -46,7 +88,9 @@
 
   <!-- You can also require other files to run in this process -->
   <script src="./renderer-process/init.js"></script>
-  <script src="./renderer-process/open-file.js"></script>
+  <script src="./renderer-process/welcome.js"></script>
+  <script src="./renderer-process/sidenav.js"></script>
+  <script src="./renderer-process/hammer.js"></script>
 
 </body>
 
