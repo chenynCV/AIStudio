@@ -24,3 +24,7 @@
 .hammer-container table {
 	border-collapse: collapse; 
 }
+
+.hide td {
+	width: 100px;
+}

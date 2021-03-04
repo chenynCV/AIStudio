@@ -15,8 +15,12 @@ for (var i = 0; i < sidenav_items.length; i++) {
 
 document.getElementById("hammer").addEventListener('click', (event) => {
   document.getElementById("sidepanel-title").innerHTML = 'HAMMER'
+  document.getElementsByClassName("hammer-container")[0].classList.remove("no-display")
+  document.getElementsByClassName("modelZoo-container")[0].classList.add("no-display")
 })
 
-document.getElementById("model-zoo").addEventListener('click', (event) => {
+document.getElementById("modelZoo").addEventListener('click', (event) => {
   document.getElementById("sidepanel-title").innerHTML = 'MODEL ZOO'
+  document.getElementsByClassName("modelZoo-container")[0].classList.remove("no-display")
+  document.getElementsByClassName("hammer-container")[0].classList.add("no-display")
 })

@@ -17,5 +17,12 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^11.3.0"
+  },
+  "dependencies": {
+    "ndarray": "^1.0.18",
+    "ndarray-ops": "^1.2.2",
+    "jimp": "^0.16.1",
+    "onnxjs": "^0.1.8",
+    "onnxjs-node": "^1.4.0"
   }
 }

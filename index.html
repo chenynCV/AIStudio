@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="assets/css/layout.css">
   <link rel="stylesheet" href="assets/css/sidenav.css">
   <link rel="stylesheet" href="assets/css/viewer.css">
-  <link rel="stylesheet" href="assets/css/terminal.css">
+  <link rel="stylesheet" href="assets/css/viewerpanel.css">
   <link rel="stylesheet" href="assets/css/sidepanel.css">
 
   <title>AI Studio</title>
@@ -24,7 +24,7 @@
     <div class="sidenav">
       <a id='hammer' class="sidenav-item active" href="#"
         style="background-image: url('assets/img/hammer-gray.svg');"></a>
-      <a id='model-zoo' class="sidenav-item" href="#" style="background-image: url('assets/img/zoo-gray.svg');"></a>
+      <a id='modelZoo' class="sidenav-item" href="#" style="background-image: url('assets/img/zoo-gray.svg');"></a>
       <a id='setup' class="sidenav-item siadenav-bottom" href="#"
         style="background-image: url('assets/img/setup-gray.svg');"></a>
     </div>
@@ -47,16 +47,7 @@
               </td>
             </tr>
           </tbody>
-          <tbody class="hide">
-            <tr>
-              <td>Australia</td>
-              <td>$7,685.00</td>
-            </tr>
-            <tr>
-              <td>Central America</td>
-              <td>$7,685.00</td>
-            </tr>
-          </tbody>
+          <tbody class="hide"></tbody>
         </table>
 
         <table id='hammer-info-table'>
@@ -71,15 +62,29 @@
         </table>
       </div>
 
+      <div class="modelZoo-container"></div>
+
     </div>
 
-    <div class="viewer-bar" id="viewer-bar"></div>
+    <div class="viewer-bar" id="viewer-bar">
+      <label></label>
+      <select>
+        <option value="0">AUTO</option>
+        <option value="1">INPUT</option>
+        <option value="2">OUTPUT</option>
+      </select>
+    </div>
     <div class="viewer" id="viewer">
-      <div class="img-container"><img class="img-center" id="img-input"></div>
-    </div>
-
-    <div class="terminal" id="terminal">
-      <ul id='selected-files'></ul>
+      <div class="img-container"><img class="img-center" id="img-view"></div>
+      <div class="viewerpanel" id="viewerpanel">
+        <div class="viewerpanel-bar">
+          <label>TASK</label>
+          <a id="task-run" href="#" style="background-image: url('assets/img/play.svg');"></a>
+        </div>
+        <div class="viewerpanel-main">
+          <ul id='selected-files'></ul>
+        </div>
+      </div>
     </div>
 
     <div class="footer" id="footer"></div>
@@ -87,10 +92,11 @@
   </div>
 
   <!-- You can also require other files to run in this process -->
-  <script src="./renderer-process/init.js"></script>
-  <script src="./renderer-process/welcome.js"></script>
-  <script src="./renderer-process/sidenav.js"></script>
-  <script src="./renderer-process/hammer.js"></script>
+  <script type="module" src="./renderer-process/hammer.js"></script>
+  <script type="module" src="./renderer-process/viewer.js"></script>
+  <script type="module" src="./renderer-process/init.js"></script>
+  <script type="module" src="./renderer-process/welcome.js"></script>
+  <script type="module" src="./renderer-process/sidenav.js"></script>
 
 </body>
 
