@@ -7,8 +7,7 @@ var ndarray = require("ndarray")
 var ops = require("ndarray-ops")
 var Jimp = require('jimp');
 
-
-function normalize(data) {
+function imagenetNormalize(data) {
   // Normalize
   ops.divseq(data.pick(null, null, null), 255.0);
   ops.subseq(data.pick(0, null, null), 0.485);
@@ -20,57 +19,68 @@ function normalize(data) {
 }
 
 
-function preprocess(img) {
-  let width = img.bitmap.width
-  let height = img.bitmap.height
-  let data = img.bitmap.data
-  const dataFromImage = ndarray(new Float32Array(data), [4, height, width]);
-  const dataProcessed = ndarray(new Float32Array(height * width * 3), [1, 3, height, width]);
+function saveImg(dataTensor, savePath) {
+  let width = dataTensor.dims[3]
+  let height = dataTensor.dims[2]
+  const dataImage = ndarray(new Uint8Array(height * width * 4), [height, width, 4]);
+  const dataModel = ndarray(new Uint8Array(dataTensor.data), [1, 3, height, width]);
 
-  ops.assign(dataProcessed.pick(0, 0, null, null), dataFromImage.pick(0, null, null));
-  ops.assign(dataProcessed.pick(0, 1, null, null), dataFromImage.pick(1, null, null));
-  ops.assign(dataProcessed.pick(0, 2, null, null), dataFromImage.pick(2, null, null));
+  ops.assign(dataImage.pick(null, null, 0), dataModel.pick(0, 0, null, null));
+  ops.assign(dataImage.pick(null, null, 1), dataModel.pick(0, 1, null, null));
+  ops.assign(dataImage.pick(null, null, 2), dataModel.pick(0, 2, null, null));
+  ops.assigns(dataImage.pick(null, null, 3), 255);
 
-  return dataProcessed.data;
+  new Jimp({ data: dataImage.data, width: width, height: height }, (err, image) => {
+    image.write(savePath);
+  });
 }
 
 
-function saveImg(data, img) {
-  let width = img.bitmap.width
-  let height = img.bitmap.height
-  const dataImage = ndarray(new Uint8Array(4 * height * width), [4, height, width]);
-  const dataModel = ndarray(new Uint8Array(data), [3, height, width]);
+class Engine {
+  // constructor
+  constructor(backend = 'onnxruntime') {
+    this.session = new onnx.InferenceSession({ backendHint: backend });
+  }
 
-  ops.assign(dataImage.pick(0, null, null), dataModel.pick(0, null, null));
-  ops.assign(dataImage.pick(1, null, null), dataModel.pick(1, null, null));
-  ops.assign(dataImage.pick(2, null, null), dataModel.pick(2, null, null));
-  ops.assigns(dataImage.pick(3, null, null), 255);
+  async loadModel(modelPath) {
+    this.session.loadModel(modelPath);
+  }
 
-  const imgPath = path.join(__dirname, "../logs/modelOut.jpg");
-  img.bitmap.data = dataImage.data
-  img.write(imgPath);
+  async preprocess(imgPath, width = 224, height = 224) {
+    const img = await Jimp.read(imgPath);
+    await img.resize(width, height, Jimp.RESIZE_BICUBIC);
+
+    let data = img.bitmap.data
+    const dataFromImage = ndarray(new Float32Array(data), [height, width, 4]);
+    const dataProcessed = ndarray(new Float32Array(height * width * 3), [1, 3, height, width]);
+
+    ops.assign(dataProcessed.pick(0, 0, null, null), dataFromImage.pick(null, null, 0));
+    ops.assign(dataProcessed.pick(0, 1, null, null), dataFromImage.pick(null, null, 1));
+    ops.assign(dataProcessed.pick(0, 2, null, null), dataFromImage.pick(null, null, 2));
+
+    const x = new onnx.Tensor(dataProcessed.data, 'float32', [1, 3, height, width]);
+    return x;
+  }
+
+  postprocess(outputMap) {
+    const output = outputMap.values().next().value;
+    return output;
+  }
+
+  async run(imgPath) {
+    const x = await this.preprocess(imgPath)
+    const outputMap = await this.session.run([x]);
+    const output = this.postprocess(outputMap)
+    return output;
+  }
 }
 
 
-async function main() {
-  // Create an ONNX inference session with ONNXRuntime backend.
-  const session = new onnx.InferenceSession({ backendHint: 'onnxruntime' });
-
-  // Load an ONNX model. This model takes two tensors of the same size and return their sum.
-  const modelPath = path.join(__dirname, "../models/rain_princess.onnx");
-  await session.loadModel(modelPath);
-
-  const imgPath = path.join(__dirname, "../logs/000.png");
-  const img = await Jimp.read(imgPath);
-  await img.resize(224, 224, Jimp.RESIZE_BICUBIC);
-
-  const x = preprocess(img);
-  const tensorX = new onnx.Tensor(x, 'float32', [1, 3, 224, 224]);
-
-  // Run model with Tensor inputs and get the result by output name defined in model.
-  const outputMap = await session.run([tensorX]);
-  const outputData = outputMap.values().next().value.data;
-  saveImg(outputData, img.clone())
+async function test() {
+  const engine = new Engine();
+  await engine.loadModel(path.join(__dirname, "../models/candy-9.onnx"))
+  const outputTensor = await engine.run(path.join(__dirname, "../logs/img_snow.jpg"))
+  saveImg(outputTensor, path.join(__dirname, "../logs/out.jpg"))
 }
 
-main();
+test();
