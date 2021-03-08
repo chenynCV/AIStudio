@@ -1,17 +1,17 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow, nativeTheme} = require('electron')
+const { app, BrowserWindow, nativeTheme } = require('electron')
 const path = require('path')
 
 if (process.mas) app.setName('AI Studio')
 
 let mainWindow = null
 
-function createWindow () {
+function createWindow() {
   const windowOptions = {
     width: 1080,
     minWidth: 640,
     height: 720,
-    minHeight: 640, 
+    minHeight: 640,
     title: app.getName(),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -26,9 +26,9 @@ function createWindow () {
 
   // and load the index.html of the app.
   mainWindow.loadFile('index.html')
-  
+
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
 }
 
 // set theme

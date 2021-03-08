@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
   <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self'; img-src 'self' data:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
+    content="default-src 'self'; img-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';">
   <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
 
   <link rel="stylesheet" href="assets/css/global.css">
@@ -47,14 +47,30 @@
               </td>
             </tr>
           </tbody>
-          <tbody class="hide"></tbody>
+          <tbody class="hide">
+            <tr>
+              <td>Model</td>
+              <td><select id="hammer-model-select"></select></td>
+            </tr>
+          </tbody>
         </table>
 
-        <table id='hammer-info-table'>
+        <table id='hammer-input-info-table'>
           <tbody class="sidepanel-folder">
             <tr>
               <td colspan="2">
-                <label id="hammer-info-title">INFO</label>
+                <label id="hammer-input-info-title">INPUT INFO</label>
+              </td>
+            </tr>
+          </tbody>
+          <tbody class="hide"></tbody>
+        </table>
+
+        <table id='hammer-model-info-table'>
+          <tbody class="sidepanel-folder">
+            <tr>
+              <td colspan="2">
+                <label id="hammer-model-info-title">MODEL INFO</label>
               </td>
             </tr>
           </tbody>
@@ -62,7 +78,9 @@
         </table>
       </div>
 
-      <div class="modelZoo-container"></div>
+      <div class="modelZoo-container no-display">
+        <ul id='modelZoo-models'></ul>
+      </div>
 
     </div>
 
@@ -75,7 +93,10 @@
       </select>
     </div>
     <div class="viewer" id="viewer">
-      <div class="img-container"><img class="img-center" id="img-view"></div>
+      <div class="img-container">
+        <img class="img-center no-display" id="img-input">
+        <img class="img-center no-display" id="img-output">
+      </div>
       <div class="viewerpanel" id="viewerpanel">
         <div class="viewerpanel-bar">
           <label>TASK</label>
@@ -92,9 +113,10 @@
   </div>
 
   <!-- You can also require other files to run in this process -->
+  <script type="module" src="./renderer-process/modelZoo.js"></script>
   <script type="module" src="./renderer-process/hammer.js"></script>
   <script type="module" src="./renderer-process/viewer.js"></script>
-  <script type="module" src="./renderer-process/init.js"></script>
+  <script type="module" src="./renderer-process/layout.js"></script>
   <script type="module" src="./renderer-process/welcome.js"></script>
   <script type="module" src="./renderer-process/sidenav.js"></script>
 

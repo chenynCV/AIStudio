@@ -19,6 +19,7 @@
     "electron": "^11.3.0"
   },
   "dependencies": {
+    "glob": "^7.1.6",
     "ndarray": "^1.0.18",
     "ndarray-ops": "^1.2.2",
     "jimp": "^0.16.1",

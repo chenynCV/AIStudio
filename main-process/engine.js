@@ -1,86 +1,70 @@
-require('onnxjs');
-// Use package 'onnxjs-node' to load ONNXRuntime backend.
-require('onnxjs-node');
-
+const { ipcMain } = require('electron')
 const path = require('path')
+const fs = require('fs')
+const glob = require("glob")
 var ndarray = require("ndarray")
 var ops = require("ndarray-ops")
-var Jimp = require('jimp');
+var Jimp = require('jimp')
 
-function imagenetNormalize(data) {
-  // Normalize
-  ops.divseq(data.pick(null, null, null), 255.0);
-  ops.subseq(data.pick(0, null, null), 0.485);
-  ops.subseq(data.pick(1, null, null), 0.456);
-  ops.subseq(data.pick(2, null, null), 0.406);
-  ops.divseq(data.pick(0, null, null), 0.229);
-  ops.divseq(data.pick(1, null, null), 0.224);
-  ops.divseq(data.pick(2, null, null), 0.225);
+const modelPackageFiles = glob.sync(path.join(__dirname, '../models/**/package.json'))
+var modelPackages;
+var engine;
+
+async function saveImg(dataTensor, savePath, cb) {
+    let width = dataTensor.dims[3]
+    let height = dataTensor.dims[2]
+    const dataImage = ndarray(new Uint8Array(height * width * 4), [height, width, 4]);
+    const dataModel = ndarray(new Uint8Array(dataTensor.data), [1, 3, height, width]);
+
+    ops.assign(dataImage.pick(null, null, 0), dataModel.pick(0, 0, null, null));
+    ops.assign(dataImage.pick(null, null, 1), dataModel.pick(0, 1, null, null));
+    ops.assign(dataImage.pick(null, null, 2), dataModel.pick(0, 2, null, null));
+    ops.assigns(dataImage.pick(null, null, 3), 255);
+
+    new Jimp({ data: dataImage.data, width: width, height: height }, (err, image) => {
+        return image.write(savePath, cb)
+    });
 }
 
-
-function saveImg(dataTensor, savePath) {
-  let width = dataTensor.dims[3]
-  let height = dataTensor.dims[2]
-  const dataImage = ndarray(new Uint8Array(height * width * 4), [height, width, 4]);
-  const dataModel = ndarray(new Uint8Array(dataTensor.data), [1, 3, height, width]);
-
-  ops.assign(dataImage.pick(null, null, 0), dataModel.pick(0, 0, null, null));
-  ops.assign(dataImage.pick(null, null, 1), dataModel.pick(0, 1, null, null));
-  ops.assign(dataImage.pick(null, null, 2), dataModel.pick(0, 2, null, null));
-  ops.assigns(dataImage.pick(null, null, 3), 255);
-
-  new Jimp({ data: dataImage.data, width: width, height: height }, (err, image) => {
-    image.write(savePath);
-  });
+function getModels(files) {
+    let allPackages = []
+    files.forEach((file) => {
+        let rawdata = fs.readFileSync(file);
+        let aPackage = JSON.parse(rawdata);
+        allPackages.push(aPackage)
+    })
+    return allPackages
 }
 
-
-class Engine {
-  // constructor
-  constructor(backend = 'onnxruntime') {
-    this.session = new onnx.InferenceSession({ backendHint: backend });
-  }
-
-  async loadModel(modelPath) {
-    this.session.loadModel(modelPath);
-  }
-
-  async preprocess(imgPath, width = 224, height = 224) {
-    const img = await Jimp.read(imgPath);
-    await img.resize(width, height, Jimp.RESIZE_BICUBIC);
-
-    let data = img.bitmap.data
-    const dataFromImage = ndarray(new Float32Array(data), [height, width, 4]);
-    const dataProcessed = ndarray(new Float32Array(height * width * 3), [1, 3, height, width]);
-
-    ops.assign(dataProcessed.pick(0, 0, null, null), dataFromImage.pick(null, null, 0));
-    ops.assign(dataProcessed.pick(0, 1, null, null), dataFromImage.pick(null, null, 1));
-    ops.assign(dataProcessed.pick(0, 2, null, null), dataFromImage.pick(null, null, 2));
-
-    const x = new onnx.Tensor(dataProcessed.data, 'float32', [1, 3, height, width]);
-    return x;
-  }
-
-  postprocess(outputMap) {
-    const output = outputMap.values().next().value;
-    return output;
-  }
-
-  async run(imgPath) {
-    const x = await this.preprocess(imgPath)
-    const outputMap = await this.session.run([x]);
-    const output = this.postprocess(outputMap)
-    return output;
-  }
+function loadModule(modulePath) {
+    const files = glob.sync(path.join(modulePath, '**/*.js'))
+    files.forEach((file) => { require(file) })
 }
 
+ipcMain.on('model-packages', (event) => {
+    modelPackages = getModels(modelPackageFiles)
+    event.sender.send('model-packages-installed', modelPackages)
+})
 
-async function test() {
-  const engine = new Engine();
-  await engine.loadModel(path.join(__dirname, "../models/candy-9.onnx"))
-  const outputTensor = await engine.run(path.join(__dirname, "../logs/img_snow.jpg"))
-  saveImg(outputTensor, path.join(__dirname, "../logs/out.jpg"))
-}
+ipcMain.on('model-selected', (event, index) => {
+    let modulePath = path.dirname(modelPackageFiles[index])
+    const Engine = require(modulePath)
+    engine = new Engine();
+    console.log(engine)
+})
 
-test();
+ipcMain.on('model-run', (event, imgFile) => {
+    imgFile = imgFile.replace("file:///", "")
+    console.log('processing ' + imgFile)
+    let outFile =  path.join(__dirname, '../logs/_out.png')
+    let cb  = function() {
+        let _img = fs.readFileSync(outFile).toString('base64')
+        let _imgSrc = "data:image/png;base64," + _img
+        event.sender.send('model-run-finished', _imgSrc)  
+    }
+    engine.run(imgFile).then(outputTensor => {
+        saveImg(outputTensor, outFile, cb)
+    }).catch(err => {
+        console.log(err)
+    })
+})

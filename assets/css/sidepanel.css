@@ -25,6 +25,39 @@
 	border-collapse: collapse; 
 }
 
+.modelZoo-container {
+	margin-left: 20px;
+    text-decoration: none;
+    color:#fff;
+}
+  
+.modelZoo-container ul {
+	list-style-type: none;
+	padding: 0;
+	margin: 0px;
+}
+	
+.modelZoo-container ul li {
+	color:#fff;
+	text-decoration: none;
+	font-size: 16px;
+	display: block;
+	position: relative;
+	margin-top: 10px;
+}
+
+.modelZoo-container .version {
+	position: absolute;
+	font-size: 12px;
+	margin-left: 10px;
+	margin-top: 5px;
+}
+
+.modelZoo-container .description {
+	display: block;
+	font-size: 12px;
+}
+
 .hide td {
 	width: 100px;
 }

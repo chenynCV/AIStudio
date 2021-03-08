@@ -4,6 +4,7 @@
   top: 0px;
   height: 30px;
   width: 100%;
+  z-index: 9;
 }
 
 .viewerpanel-bar label {
@@ -34,7 +35,10 @@
   display: block;
   position: absolute;
   top: 30px;
+  bottom: 0px;
   width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .viewerpanel-main ul {
