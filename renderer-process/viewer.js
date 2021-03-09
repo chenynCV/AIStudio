@@ -1,7 +1,27 @@
 const { ipcRenderer } = require('electron')
-const fs = require('fs')
 import { updateHammerInfo } from './hammer.js'
 import { updateAppLayout } from './layout.js'
+
+const viewerBarSelect = document.getElementById("viewer-bar-select")
+
+function updateViewMode(showOutput = false) {
+    var index = viewerBarSelect.selectedIndex
+    if (index == 1) {
+        document.getElementById("img-input").classList.remove("no-display")
+        document.getElementById("img-output").classList.add("no-display")
+    } else if (index == 2) {
+        document.getElementById("img-input").classList.add("no-display")
+        document.getElementById("img-output").classList.remove("no-display")
+    } else if (index == 0) {
+        if (showOutput) {
+            document.getElementById("img-input").classList.add("no-display")
+            document.getElementById("img-output").classList.remove("no-display")
+        } else {
+            document.getElementById("img-input").classList.remove("no-display")
+            document.getElementById("img-output").classList.add("no-display")
+        }
+    }
+}
 
 function updateViwerPanel(filePaths) {
     var ul = document.getElementById("selected-files")
@@ -21,7 +41,7 @@ function updateViwerPanel(filePaths) {
                 console.log(imgFile)
                 document.getElementById("img-input").src = imgFile
                 document.getElementById("viewer-bar").getElementsByTagName('label')[0].innerHTML = imgFile
-                document.getElementById("img-input").classList.remove("no-display")
+                updateViewMode(false)
                 updateHammerInfo()
             }
         })
@@ -38,11 +58,15 @@ document.getElementById("task-run").addEventListener('click', (event) => {
 })
 
 
+viewerBarSelect.addEventListener('change', (event) => {
+    updateViewMode()
+})
+
+
 ipcRenderer.on('model-run-finished', (event, data) => {
     console.log("model-run-finished")
     document.getElementById("img-output").src = data
-    document.getElementById("img-input").classList.add("no-display")
-    document.getElementById("img-output").classList.remove("no-display")
+    updateViewMode(true)
 })
 
 export { updateViwerPanel };
