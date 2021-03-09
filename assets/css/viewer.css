@@ -1,3 +1,23 @@
+.viewer {
+  display: grid;
+  position: relative;
+  grid-template-areas:
+    "viewer-bar"
+    "viewer-main"
+    "viewerpanel";
+  grid-template-rows: 30px 1fr 240px;
+  grid-gap: 1px;
+  flex: auto;
+}
+
+
+.viewer-bar {
+  grid-area: viewer-bar;
+  position: relative;
+  background-color: #333;
+}
+
+
 .viewer-bar label {
   text-align: left;
   margin-left: 12px;
@@ -14,31 +34,33 @@
   right: 30px;
 }
 
+.viewer-main {
+  grid-area: viewer-main;
+  position: relative;
+}
+
+.viewerpanel {
+  grid-area: viewerpanel;
+  position: relative;
+  min-height: 240px;
+  bottom: 0px;
+  background-color: rgb(32, 32, 32);
+  border-top: 1px solid rgb(133, 133, 133);
+}
+
 .img-container {
   display: block;
-  position: relative;
+  position: absolute;
   width: 100%;
   height: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .img-container img {
+  min-height: 666px;
   position: relative;
-  min-height: 700px;
   margin-left: auto;
   margin-right: auto;
   margin-top: auto;
   margin-bottom: auto;
-}
-
-.viewerpanel {
-  display: block;
-  position: absolute;
-  width: 100%;
-  height: 240px;
-  bottom: 0px;
-  background-color: rgb(32, 32, 32);
-  border-top: 1px solid rgb(133, 133, 133);
 }

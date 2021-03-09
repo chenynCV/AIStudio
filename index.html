@@ -32,70 +32,72 @@
     <div class="welcome" id="welcome" style="background-image: url('assets/img/keyboard-gray.svg');">Click to Start
       Creat</div>
 
-    <div class="sidepanel-bar" id="sidepanel-bar">
-      <div class='sidepanel-title' id='sidepanel-title'>HAMMER</div>
-    </div>
-
     <div class="sidepanel" id="sidepanel">
-
-      <div class="hammer-container">
-        <table id='hammer-params-table'>
-          <tbody class="sidepanel-folder">
-            <tr>
-              <td colspan="2">
-                <label id="hammer-params-title">PARAMS</label>
-              </td>
-            </tr>
-          </tbody>
-          <tbody class="hide">
-            <tr>
-              <td>Model</td>
-              <td><select id="hammer-model-select"></select></td>
-            </tr>
-          </tbody>
-        </table>
-
-        <table id='hammer-input-info-table'>
-          <tbody class="sidepanel-folder">
-            <tr>
-              <td colspan="2">
-                <label id="hammer-input-info-title">INPUT INFO</label>
-              </td>
-            </tr>
-          </tbody>
-          <tbody class="hide"></tbody>
-        </table>
-
-        <table id='hammer-model-info-table'>
-          <tbody class="sidepanel-folder">
-            <tr>
-              <td colspan="2">
-                <label id="hammer-model-info-title">MODEL INFO</label>
-              </td>
-            </tr>
-          </tbody>
-          <tbody class="hide"></tbody>
-        </table>
+      <div class="sidepanel-bar">
+        <label id="sidepanel-title">HAMMER</label>
       </div>
 
-      <div class="modelZoo-container no-display">
-        <ul id='modelZoo-models'></ul>
+      <div class="sidepanel-main">
+        <div class="hammer-container">
+          <table id='hammer-params-table'>
+            <tbody class="sidepanel-folder">
+              <tr>
+                <td colspan="2">
+                  <label id="hammer-params-title">PARAMS</label>
+                </td>
+              </tr>
+            </tbody>
+            <tbody class="hide">
+              <tr>
+                <td>Model</td>
+                <td><select id="hammer-model-select"></select></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table id='hammer-input-info-table'>
+            <tbody class="sidepanel-folder">
+              <tr>
+                <td colspan="2">
+                  <label id="hammer-input-info-title">INPUT INFO</label>
+                </td>
+              </tr>
+            </tbody>
+            <tbody class="hide"></tbody>
+          </table>
+
+          <table id='hammer-model-info-table'>
+            <tbody class="sidepanel-folder">
+              <tr>
+                <td colspan="2">
+                  <label id="hammer-model-info-title">MODEL INFO</label>
+                </td>
+              </tr>
+            </tbody>
+            <tbody class="hide"></tbody>
+          </table>
+        </div>
+
+        <div class="modelZoo-container no-display">
+          <ul id='modelZoo-models'></ul>
+        </div>
       </div>
-
     </div>
 
-    <div class="viewer-bar" id="viewer-bar">
-      <label></label>
-      <select>
-        <option value="0">AUTO</option>
-        <option value="1">INPUT</option>
-        <option value="2">OUTPUT</option>
-      </select>
-    </div>
     <div class="viewer" id="viewer">
-      <div class="img-container">
-        <img class="img-center no-display" id="img-input">
-        <img class="img-center no-display" id="img-output">
+      <div class="viewer-bar" id="viewer-bar">
+        <label></label>
+        <select>
+          <option value="0">AUTO</option>
+          <option value="1">INPUT</option>
+          <option value="2">OUTPUT</option>
+        </select>
+      </div>
+      <div class="viewer-main">
+        <div class="img-container">
+          <img class="img-center no-display" id="img-input">
+          <img class="img-center no-display" id="img-output">
+        </div>
       </div>
       <div class="viewerpanel" id="viewerpanel">
         <div class="viewerpanel-bar">

@@ -1,8 +1,33 @@
-.sidepanel-title {
-    margin-top: 5px;
+.sidepanel {
+	display: grid;
+	position: relative;
+	grid-template-areas:
+	  "sidepanel-bar"
+	  "sidepanel-main";
+	grid-template-columns: 1fr;
+	grid-template-rows: 30px 1fr;
+	grid-gap: 1px;
+	flex: auto;
+  }
+
+.sidepanel-bar {
+	grid-area: sidepanel-bar;
+	position: relative;
+	background-color: rgb(41, 41, 41);
+}
+
+.sidepanel-bar label {
+	text-align: left;
     margin-left: 20px;
     text-decoration: none;
     color:#fff;
+	max-width: 100px;
+}
+
+.sidepanel-main {
+	grid-area: sidepanel-main;
+	position: relative;
+	background-color: rgb(41, 41, 41);
 }
 
 .sidepanel-folder tr td label {
