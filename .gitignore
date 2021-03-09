@@ -49,3 +49,4 @@ src/examples
 build/static/media/config.*.xml
 
 yarn.lock
+out/
