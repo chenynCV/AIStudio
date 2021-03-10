@@ -12,9 +12,6 @@ document.getElementById("welcome").addEventListener('click', (event) => {
 ipcRenderer.on('selected-files', (event, filePaths) => {
   console.log(filePaths)
   updateViwerPanel(filePaths)
-  if (filePaths.length > 0) {
-    document.getElementById("img-input").src = filePaths[0]
-  }
-  updateAppLayout()
   updateHammerInfo()
+  updateAppLayout()
 })

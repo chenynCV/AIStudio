@@ -54,7 +54,6 @@ ipcMain.on('model-selected', (event, index) => {
 })
 
 ipcMain.on('model-run', (event, imgFile) => {
-    imgFile = imgFile.replace("file:///", "")
     console.log('processing ' + imgFile)
     let outFile =  path.join(__dirname, '../logs/_out.png')
     let cb  = function() {
