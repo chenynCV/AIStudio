@@ -8,8 +8,8 @@ ipcRenderer.on('model-packages-installed', (event, data) => {
 
 function updateHammerInfo() {
     let tb = document.getElementById("hammer-input-info-table").getElementsByTagName("tbody")[1]
-    let img_width = document.getElementById("img-to-show").width
-    let img_height = document.getElementById("img-to-show").height
+    let img_width = document.getElementById("img-to-show").naturalWidth
+    let img_height = document.getElementById("img-to-show").naturalHeight
 
     let rowNum = tb.rows.length;
     for (let i = 0; i < rowNum; i++) {

@@ -31,6 +31,29 @@ function updateViwerPanel(filePaths) {
     }
 }
 
+function zoomImage(image, container, scale = 1) {
+    if (scale >= 3) {
+        image.classList.add('pixelated');
+    } else {
+        image.classList.remove('pixelated');
+    }
+
+    const dx = (window.scrollX + container.clientWidth / 2) / container.scrollWidth;
+    const dy = (window.scrollY + container.clientHeight / 2) / container.scrollHeight;
+
+    image.classList.remove('scale-to-fit');
+    image.style.minWidth = `${(image.naturalWidth * scale)}px`;
+    image.style.width = `${(image.naturalWidth * scale)}px`;
+
+    const newScrollX = container.scrollWidth * dx - container.clientWidth / 2;
+    const newScrollY = container.scrollHeight * dy - container.clientHeight / 2;
+
+    window.scrollTo(newScrollX, newScrollY);
+}
+
+image.addEventListener('load', (event) => {
+    updateHammerInfo()
+})
 
 document.getElementById("task-run").addEventListener('click', (event) => {
     event.preventDefault()
@@ -54,34 +77,16 @@ document.getElementById("task-run").addEventListener('click', (event) => {
 
 document.getElementById("zoom-level").addEventListener('change', (event) => {
     var index = event.target.selectedIndex
-    console.log(index)
+    const container = document.getElementsByClassName("img-container")[0]
     if (index === 0) {
         image.classList.add('scale-to-fit');
         image.classList.remove('pixelated');
         image.style.minWidth = 'auto';
         image.style.width = 'auto';
-        vscode.setState(undefined);
-    } else {
-        scale = clamp(newScale, MIN_SCALE, MAX_SCALE);
-        if (scale >= PIXELATION_THRESHOLD) {
-            image.classList.add('pixelated');
-        } else {
-            image.classList.remove('pixelated');
-        }
-
-        const dx = (window.scrollX + container.clientWidth / 2) / container.scrollWidth;
-        const dy = (window.scrollY + container.clientHeight / 2) / container.scrollHeight;
-
-        image.classList.remove('scale-to-fit');
-        image.style.minWidth = `${(image.naturalWidth * scale)}px`;
-        image.style.width = `${(image.naturalWidth * scale)}px`;
-
-        const newScrollX = container.scrollWidth * dx - container.clientWidth / 2;
-        const newScrollY = container.scrollHeight * dy - container.clientHeight / 2;
-
-        window.scrollTo(newScrollX, newScrollY);
-
-        vscode.setState({ scale: scale, offsetX: newScrollX, offsetY: newScrollY });
+    } else if (index === 1) {
+        let scale = 2 * image.width / image.naturalWidth
+        console.log(scale)
+        zoomImage(image, container, scale)
     }
 })
 

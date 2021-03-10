@@ -62,8 +62,8 @@
 }
 
 .img-container img {
-  min-height: 688px;
   position: relative;
+  min-height: calc(100% - 30px);
   max-width: none;
 	max-height: none;
   margin: auto;
