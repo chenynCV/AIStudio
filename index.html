@@ -24,6 +24,7 @@
     <div class="sidenav">
       <a id='hammer' class="sidenav-item active" href="#"
         style="background-image: url('assets/img/hammer-gray.svg');"></a>
+      <a id='magic' class="sidenav-item" href="#" style="background-image: url('assets/img/magic-gray.svg');"></a>
       <a id='modelZoo' class="sidenav-item" href="#" style="background-image: url('assets/img/zoo-gray.svg');"></a>
       <a id='setup' class="sidenav-item siadenav-bottom" href="#"
         style="background-image: url('assets/img/setup-gray.svg');"></a>
@@ -35,12 +36,13 @@
     <div class="sidepanel" id="sidepanel">
       <div class="sidepanel-bar">
         <label id="sidepanel-title">HAMMER</label>
+        <a id="task-run" href="#" style="background-image: url('assets/img/play.svg');"></a>
       </div>
 
       <div class="sidepanel-main">
         <div class="hammer-container">
           <table id='hammer-params-table'>
-            <tbody class="sidepanel-folder">
+            <tbody class="hammer-folder">
               <tr>
                 <td colspan="2">
                   <label id="hammer-params-title">PARAMS</label>
@@ -56,7 +58,7 @@
           </table>
 
           <table id='hammer-input-info-table'>
-            <tbody class="sidepanel-folder">
+            <tbody class="hammer-folder">
               <tr>
                 <td colspan="2">
                   <label id="hammer-input-info-title">INPUT INFO</label>
@@ -67,7 +69,7 @@
           </table>
 
           <table id='hammer-model-info-table'>
-            <tbody class="sidepanel-folder">
+            <tbody class="hammer-folder">
               <tr>
                 <td colspan="2">
                   <label id="hammer-model-info-title">MODEL INFO</label>
@@ -78,6 +80,8 @@
           </table>
         </div>
 
+        <div class="magic-container no-display"></div>
+
         <div class="modelZoo-container no-display">
           <ul id='modelZoo-models'></ul>
         </div>
@@ -85,24 +89,23 @@
     </div>
 
     <div class="viewer" id="viewer">
-      <div class="viewer-bar" id="viewer-bar">
-        <label></label>
+      <div class="viewer-tab" id="viewer-tab">
         <select id="zoom-level">
           <option value="0">ZOOM TO FIT</option>
           <option value="1">ZOOM 200%</option>
         </select>
       </div>
+
       <div class="viewer-main">
-        <div class="img-container">
-          <img class="img-center scale-to-fit" id="img-to-show">
-        </div>
+        <div class="viewer-main-bar"></div>
+        <div class="viewer-main-img"><img class="img-center scale-to-fit"></div>
       </div>
-      <div class="viewerpanel" id="viewerpanel">
-        <div class="viewerpanel-bar">
+
+      <div class="viewer-panel" id="viewer-panel">
+        <div class="viewer-panel-bar">
           <label>TASK</label>
-          <a id="task-run" href="#" style="background-image: url('assets/img/play.svg');"></a>
         </div>
-        <div class="viewerpanel-main">
+        <div class="viewer-panel-main">
           <ul id='selected-files'></ul>
         </div>
       </div>

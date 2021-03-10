@@ -16,6 +16,14 @@ for (var i = 0; i < sidenav_items.length; i++) {
 document.getElementById("hammer").addEventListener('click', (event) => {
   document.getElementById("sidepanel-title").innerHTML = 'HAMMER'
   document.getElementsByClassName("hammer-container")[0].classList.remove("no-display")
+  document.getElementsByClassName("magic-container")[0].classList.add("no-display")
+  document.getElementsByClassName("modelZoo-container")[0].classList.add("no-display")
+})
+
+document.getElementById("magic").addEventListener('click', (event) => {
+  document.getElementById("sidepanel-title").innerHTML = 'MAGIC'
+  document.getElementsByClassName("magic-container")[0].classList.remove("no-display")
+  document.getElementsByClassName("hammer-container")[0].classList.add("no-display")
   document.getElementsByClassName("modelZoo-container")[0].classList.add("no-display")
 })
 
@@ -23,4 +31,5 @@ document.getElementById("modelZoo").addEventListener('click', (event) => {
   document.getElementById("sidepanel-title").innerHTML = 'MODEL ZOO'
   document.getElementsByClassName("modelZoo-container")[0].classList.remove("no-display")
   document.getElementsByClassName("hammer-container")[0].classList.add("no-display")
+  document.getElementsByClassName("magic-container")[0].classList.add("no-display")
 })

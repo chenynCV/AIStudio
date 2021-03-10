@@ -24,13 +24,30 @@
 	max-width: 100px;
 }
 
+.sidepanel-bar a {
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 20px;
+}
+
+.sidepanel-bar a:hover {
+	background-color: #777;
+}
+
+.sidepanel-bar #task-run {
+	right: 10px;
+}
+
 .sidepanel-main {
 	grid-area: sidepanel-main;
 	position: relative;
 	background-color: rgb(41, 41, 41);
 }
 
-.sidepanel-folder tr td label {
+.hammer-folder tr td label {
 	display: block;
 	position: relative;
 	text-align: left;

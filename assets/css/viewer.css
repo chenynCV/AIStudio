@@ -2,31 +2,24 @@
   display: grid;
   position: relative;
   grid-template-areas:
-    "viewer-bar"
+    "viewer-tab"
     "viewer-main"
-    "viewerpanel";
+    "viewer-panel";
   grid-template-rows: 30px 1fr 240px;
   grid-gap: 1px;
   flex: auto;
 }
 
 
-.viewer-bar {
-  grid-area: viewer-bar;
+.viewer-tab {
+  grid-area: viewer-tab;
   position: relative;
   background-color: #333;
+  height: 100%;
 }
 
 
-.viewer-bar label {
-  text-align: left;
-  margin-left: 12px;
-  text-decoration: none;
-  font-size: 12px;
-  max-width: 100px;
-}
-
-.viewer-bar select {
+.viewer-tab select {
   position: absolute;
   color: #ffffff;
   background-color: #333;
@@ -34,21 +27,48 @@
   right: 30px;
 }
 
+
+.viewer-tab a {
+  display: inline-block;
+  position: relative;
+  width: 100px;
+  height: 100%;
+  color: #ffffff;
+  text-align: left;
+  padding-top: 5px;
+  padding-left: 10px;
+}
+
+
+.viewer-tab a:hover {
+  background-color: #777;
+}
+
+
+.viewer-tab a.active {
+  background-color: rgb(32, 32, 32);
+}
+
 .viewer-main {
   grid-area: viewer-main;
   position: relative;
 }
 
-.viewerpanel {
-  grid-area: viewerpanel;
-  position: relative;
-  min-height: 240px;
-  bottom: 0px;
+.viewer-main-bar {
+  grid-area: viewer-main-bar;
+  position: fixed;
+  width: 100%;
+  height: 24px;
   background-color: rgb(32, 32, 32);
-  border-top: 1px solid rgb(133, 133, 133);
+  text-align: left;
+  margin-left: 12px;
+  text-decoration: none;
+  font-size: 12px;
+  z-index: 9;
 }
 
-.img-container {
+
+.viewer-main-img {
   display: block;
   position: absolute;
   text-align: center;
@@ -57,36 +77,46 @@
   overflow: auto;
 }
 
-.img-container:focus {
+.viewer-main-img:focus {
 	outline: none !important;
 }
 
-.img-container img {
+.viewer-main-img img {
   position: relative;
   min-height: calc(100% - 30px);
+  top: 10px;
   max-width: none;
 	max-height: none;
   margin: auto;
 }
 
-.img-container img.pixelated {
+.viewer-main-img img.pixelated {
 	image-rendering: pixelated;
 }
 
-.img-container img.scale-to-fit {
+.viewer-main-img img.scale-to-fit {
 	max-width: calc(100% - 20px);
 	max-height: calc(100% - 20px);
 	object-fit: contain;
 }
 
-.img-container img {
+.viewer-main-img img {
 	margin: auto;
 }
 
-.img-container.ready.zoom-in {
+.viewer-main-img.ready.zoom-in {
 	cursor: zoom-in;
 }
 
-.img-container.ready.zoom-out {
+.viewer-main-img.ready.zoom-out {
 	cursor: zoom-out;
+}
+
+.viewer-panel {
+  grid-area: viewer-panel;
+  position: relative;
+  min-height: 240px;
+  bottom: 0px;
+  background-color: rgb(32, 32, 32);
+  border-top: 1px solid rgb(133, 133, 133);
 }

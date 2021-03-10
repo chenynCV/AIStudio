@@ -4,7 +4,94 @@ const path = require('path')
 import { updateHammerInfo } from './hammer.js'
 import { updateAppLayout } from './layout.js'
 
-const image = document.getElementById("img-to-show")
+var viewerNames = new Array()
+
+function removeByVal(array, val) {
+    for (var i = 0; i < array.length; i++) {
+        if (array[i] == val) {
+            array.splice(i, 1);
+            break;
+        }
+    }
+}
+
+function getActiveIndex() {
+    let tablinks = document.getElementsByClassName("viewer-tab")
+    for (var i = 0; i < tablinks.length; i++) {
+        if (tablinks[i].classList.contains("active")) {
+            return i
+        }
+    }
+}
+
+
+function getActiveImg() {
+    let image = document.getElementsByClassName("viewer-main-img")[getActiveIndex()].children[0]
+    return image
+}
+
+
+function getActiveBar() {
+    let image = document.getElementsByClassName("viewer-main-bar")[getActiveIndex()]
+    return image
+}
+
+
+function updataViewerStatus(tablink) {
+    let tablinks = document.getElementsByClassName("viewer-tab")
+    let tabcontent = document.getElementsByClassName("viewer-main")
+    for (var i = 0; i < tablinks.length; i++) {
+        if (tablinks[i] === tablink) {
+            tablinks[i].classList.add("active")
+            tabcontent[i].classList.remove("no-display")
+        } else {
+            tablinks[i].classList.remove("active")
+            tabcontent[i].classList.add("no-display")
+        }
+    }
+}
+
+
+function creatViewerTab(imgFile) {
+    if (viewerNames.includes(imgFile)) {
+        return
+    }
+    viewerNames.push(imgFile)
+
+    let a = document.createElement("a")
+    a.text = "Preview"
+    a.classList.add("viewer-tab")
+    a.classList.add("active")
+    a.onclick = function () {
+        updataViewerStatus(this)
+    }
+    console.log(a)
+    document.getElementById("viewer-tab").appendChild(a)
+
+    let bar = document.createElement("div")
+    bar.classList.add("viewer-main-bar")
+    bar.innerHTML = imgFile
+
+    let img = document.createElement("img")
+    img.classList.add("img-center")
+    img.classList.add("scale-to-fit")
+    img.src = imgFile
+    img.onload = function () {
+        updateHammerInfo(this)
+    }
+    let imgDiv = document.createElement("div")
+    imgDiv.classList.add("viewer-main-img")
+    imgDiv.appendChild(img)
+
+    let main = document.createElement("div")
+    main.classList.add("viewer-main")
+    main.appendChild(bar)
+    main.appendChild(imgDiv)
+    document.getElementById("viewer").appendChild(main)
+
+    updataViewerStatus(a)
+}
+
 
 function updateViwerPanel(filePaths) {
     var ul = document.getElementById("selected-files")
@@ -22,14 +109,13 @@ function updateViwerPanel(filePaths) {
             if (found) {
                 let imgFile = found[1]
                 console.log(imgFile)
-                image.src = imgFile
-                document.getElementById("viewer-bar").getElementsByTagName('label')[0].innerHTML = imgFile
-                updateHammerInfo()
+                creatViewerTab(imgFile)
             }
         })
         ul.appendChild(li)
     }
 }
+
 
 function zoomImage(image, container, scale = 1) {
     if (scale >= 3) {
@@ -51,13 +137,11 @@ function zoomImage(image, container, scale = 1) {
     window.scrollTo(newScrollX, newScrollY);
 }
 
-image.addEventListener('load', (event) => {
-    updateHammerInfo()
-})
 
 document.getElementById("task-run").addEventListener('click', (event) => {
     event.preventDefault()
     console.log('task-run clicked!')
+    let image = getActiveImg()
     let imgFile;
     if (image.src.startsWith("file:")) {
         imgFile = image.src.replace("file:///", "")
@@ -77,7 +161,8 @@ document.getElementById("task-run").addEventListener('click', (event) => {
 
 document.getElementById("zoom-level").addEventListener('change', (event) => {
     var index = event.target.selectedIndex
-    const container = document.getElementsByClassName("img-container")[0]
+    const container = document.getElementsByClassName("viewer-main-img")[0]
+    let image = getActiveImg()
     if (index === 0) {
         image.classList.add('scale-to-fit');
         image.classList.remove('pixelated');
@@ -93,7 +178,14 @@ document.getElementById("zoom-level").addEventListener('change', (event) => {
 
 ipcRenderer.on('model-run-finished', (event, data) => {
     console.log("model-run-finished")
+    let image = getActiveImg()
     image.src = data
+
+    let bar = getActiveBar()
+    removeByVal(viewerNames, bar.innerHTML)
+    bar.innerHTML += "^_^"
+    viewerNames.push(bar.innerHTML)
 })
+
 
 export { updateViwerPanel };

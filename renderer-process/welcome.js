@@ -1,4 +1,3 @@
-import { updateHammerInfo } from './hammer.js'
 import { updateAppLayout } from './layout.js'
 import { updateViwerPanel } from './viewer.js'
 const { ipcRenderer } = require('electron')
@@ -12,6 +11,5 @@ document.getElementById("welcome").addEventListener('click', (event) => {
 ipcRenderer.on('selected-files', (event, filePaths) => {
   console.log(filePaths)
   updateViwerPanel(filePaths)
-  updateHammerInfo()
   updateAppLayout()
 })
