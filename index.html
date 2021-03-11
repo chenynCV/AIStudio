@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="assets/css/viewer.css">
   <link rel="stylesheet" href="assets/css/viewerpanel.css">
   <link rel="stylesheet" href="assets/css/sidepanel.css">
+  <link rel="stylesheet" href="assets/css/magic.css">
 
   <title>AI Studio</title>
 </head>
@@ -82,6 +83,20 @@
         </div>
 
         <div class="magic-container no-display">
+          <table id='magic-flag-table'>
+            <tbody>
+              <tr>
+                <td>Auto Update</td>
+                <td>
+                  <label class="magic-switch">
+                    <input type="checkbox" id="magic-auto">
+                    <span class="slider round"></span>
+                  </label>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
           <table id='magic-binarization-table'>
             <tbody class="magic-folder">
               <tr>
@@ -95,7 +110,7 @@
                 <td>Threshold</td>
                 <td>
                   <div class="tooltip">
-                    <input class="tooltip" type="range" min="0" max="255" value="128" id="binarization-slider"></input>
+                    <input class="tooltip" type="range" min="0" max="255" value="128" id="binarization-slider">
                     <span class="tooltiptext">128</span>
                   </div>
                 </td>

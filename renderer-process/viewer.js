@@ -1,25 +1,8 @@
 const { ipcRenderer } = require('electron')
-const fs = require('fs')
 const path = require('path')
 import { updateHammerInfo } from './hammer.js'
 import { updateAppLayout } from './layout.js'
-
-
-function writePng(data, imgFile) {
-    let base64Data = data.replace(/^data:image\/png;base64,/, "");
-    fs.writeFile(imgFile, base64Data, 'base64', function (err) {
-        if (err) {
-            console.log(err);
-        }
-    });
-}
-
-
-function readPng(imgFile) {
-    let img = fs.readFileSync(imgFile).toString('base64')
-    let imgSrc = "data:image/png;base64," + img
-    return imgSrc
-}
+import { writePng, readPng } from './utils.js'
 
 
 function getActiveTabIndex() {
@@ -40,6 +23,12 @@ function getActiveTabContainer() {
 
 function getActiveTabImg() {
     let image = document.getElementsByClassName("viewer-main-img")[getActiveTabIndex()].children[0]
+    return image
+}
+
+
+function getActiveTabImgOri() {
+    let image = document.getElementsByClassName("viewer-main-img")[getActiveTabIndex()].children[1]
     return image
 }
 
@@ -225,4 +214,4 @@ ipcRenderer.on('model-run-finished', (event, file) => {
 })
 
 
-export { updateViwerPanel };
+export { updateViwerPanel, getActiveTabImg, creatViewerTab };

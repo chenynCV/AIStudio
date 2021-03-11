@@ -1,0 +1,82 @@
+.magic-container {
+	margin-left: 20px;
+    text-decoration: none;
+    color:#fff;
+}
+
+.magic-container table {
+	border-collapse: collapse; 
+}
+
+.magic-folder tr td label {
+	display: block;
+	position: relative;
+	text-align: left;
+	width: 100%;
+	border-bottom: 1px solid #333;
+	font-weight: bold;
+	color: #fff;
+}
+
+/* The switch - the box around the slider */
+.magic-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+  }
+  
+/* Hide default HTML checkbox */
+.magic-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider */
+.magic-switch .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.magic-switch .slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 5px;
+    bottom: 2px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.magic-switch input:checked + .slider {
+    background-color: #2196F3;
+}
+
+.magic-switch input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+.magic-switch input:checked + .slider:before {
+    -webkit-transform: translateX(20px);
+    -ms-transform: translateX(20px);
+    transform: translateX(20px);
+}
+
+/* Rounded sliders */
+.magic-switch .slider.round {
+    border-radius: 24px;
+}
+
+.magic-switch .slider.round:before {
+    border-radius: 50%;
+}

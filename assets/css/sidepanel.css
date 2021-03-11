@@ -103,23 +103,3 @@
 .hide td {
 	width: 100px;
 }
-
-.magic-container {
-	margin-left: 20px;
-    text-decoration: none;
-    color:#fff;
-}
-
-.magic-container table {
-	border-collapse: collapse; 
-}
-
-.magic-folder tr td label {
-	display: block;
-	position: relative;
-	text-align: left;
-	width: 100%;
-	border-bottom: 1px solid #333;
-	font-weight: bold;
-	color: #fff;
-}

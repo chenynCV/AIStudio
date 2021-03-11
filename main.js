@@ -58,3 +58,4 @@ app.on('window-all-closed', function () {
 // code. You can also put them in separate files and require them here.
 require(path.join(__dirname, '/main-process/welcome.js'))
 require(path.join(__dirname, '/main-process/engine.js'))
+require(path.join(__dirname, '/main-process/magic.js'))
