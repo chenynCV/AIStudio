@@ -9,6 +9,7 @@
   <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
 
   <link rel="stylesheet" href="assets/css/global.css">
+  <link rel="stylesheet" href="assets/css/tooltip.css">
   <link rel="stylesheet" href="assets/css/layout.css">
   <link rel="stylesheet" href="assets/css/sidenav.css">
   <link rel="stylesheet" href="assets/css/viewer.css">
@@ -80,7 +81,28 @@
           </table>
         </div>
 
-        <div class="magic-container no-display"></div>
+        <div class="magic-container no-display">
+          <table id='magic-binarization-table'>
+            <tbody class="magic-folder">
+              <tr>
+                <td colspan="2">
+                  <label>Binarization</label>
+                </td>
+              </tr>
+            </tbody>
+            <tbody class="hide">
+              <tr>
+                <td>Threshold</td>
+                <td>
+                  <div class="tooltip">
+                    <input class="tooltip" type="range" min="0" max="255" value="128" id="binarization-slider"></input>
+                    <span class="tooltiptext">128</span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
         <div class="modelZoo-container no-display">
           <ul id='modelZoo-models'></ul>
@@ -118,6 +140,7 @@
   <!-- You can also require other files to run in this process -->
   <script type="module" src="./renderer-process/modelZoo.js"></script>
   <script type="module" src="./renderer-process/hammer.js"></script>
+  <script type="module" src="./renderer-process/magic.js"></script>
   <script type="module" src="./renderer-process/viewer.js"></script>
   <script type="module" src="./renderer-process/layout.js"></script>
   <script type="module" src="./renderer-process/welcome.js"></script>
