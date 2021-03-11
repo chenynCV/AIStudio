@@ -155,6 +155,26 @@ img {
   outline: 1px solid transparent;
 }
 
+
+::-webkit-scrollbar {
+  width: 15px;
+  height: 15px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgb(32, 32, 32);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #555;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #888;
+}
+
 @media (prefers-color-scheme: dark) {
   body { background:  #333; color: white; }
 }

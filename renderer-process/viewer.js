@@ -4,18 +4,25 @@ const path = require('path')
 import { updateHammerInfo } from './hammer.js'
 import { updateAppLayout } from './layout.js'
 
-var viewerNames = new Array()
 
-function removeByVal(array, val) {
-    for (var i = 0; i < array.length; i++) {
-        if (array[i] == val) {
-            array.splice(i, 1);
-            break;
+function writePng(data, imgFile) {
+    let base64Data = data.replace(/^data:image\/png;base64,/, "");
+    fs.writeFile(imgFile, base64Data, 'base64', function (err) {
+        if (err) {
+            console.log(err);
         }
-    }
+    });
 }
 
-function getActiveIndex() {
+
+function readPng(imgFile) {
+    let img = fs.readFileSync(imgFile).toString('base64')
+    let imgSrc = "data:image/png;base64," + img
+    return imgSrc
+}
+
+
+function getActiveTabIndex() {
     let tablinks = document.getElementsByClassName("viewer-tab")
     for (var i = 0; i < tablinks.length; i++) {
         if (tablinks[i].classList.contains("active")) {
@@ -25,25 +32,33 @@ function getActiveIndex() {
 }
 
 
-function getActiveImg() {
-    let image = document.getElementsByClassName("viewer-main-img")[getActiveIndex()].children[0]
+function getActiveTabContainer() {
+    let image = document.getElementsByClassName("viewer-main-img")[getActiveTabIndex()]
     return image
 }
 
 
-function getActiveBar() {
-    let image = document.getElementsByClassName("viewer-main-bar")[getActiveIndex()]
+function getActiveTabImg() {
+    let image = document.getElementsByClassName("viewer-main-img")[getActiveTabIndex()].children[0]
     return image
 }
 
 
-function updataViewerStatus(tablink) {
+function getActiveTabBar() {
+    let image = document.getElementsByClassName("viewer-main-bar")[getActiveTabIndex()]
+    return image
+}
+
+
+function activateTab(tablink) {
     let tablinks = document.getElementsByClassName("viewer-tab")
     let tabcontent = document.getElementsByClassName("viewer-main")
     for (var i = 0; i < tablinks.length; i++) {
         if (tablinks[i] === tablink) {
             tablinks[i].classList.add("active")
             tabcontent[i].classList.remove("no-display")
+            console.log("activating ...")
+            console.log(tablinks[i])
         } else {
             tablinks[i].classList.remove("active")
             tabcontent[i].classList.add("no-display")
@@ -51,22 +66,31 @@ function updataViewerStatus(tablink) {
     }
 }
 
+function activateLastTab() {
+    let tablinks = document.getElementsByClassName("viewer-tab")
+    activateTab(tablinks[tablinks.length - 1])
+}
+
+
+function delViewerTab(imgFile) {
+    if (document.getElementById(imgFile + "-tablink")) {
+        console.log('del tablink:' + imgFile)
+        let tablink = document.getElementById(imgFile + "-tablink")
+        tablink.parentNode.removeChild(tablink)
+    }
+    if (document.getElementById(imgFile + "-tabcontent")) {
+        console.log('del tabcontent:' + imgFile)
+        let tabcontent = document.getElementById(imgFile + "-tabcontent")
+        tabcontent.parentNode.removeChild(tabcontent)
+    }
+}
+
 
 function creatViewerTab(imgFile) {
-    if (viewerNames.includes(imgFile)) {
+    if (document.getElementById(imgFile + "-tablink")) {
+        activateTab(document.getElementById(imgFile + "-tablink"))
         return
     }
-    viewerNames.push(imgFile)
-
-    let a = document.createElement("a")
-    a.text = "Preview"
-    a.classList.add("viewer-tab")
-    a.classList.add("active")
-    a.onclick = function () {
-        updataViewerStatus(this)
-    }
-    console.log(a)
-    document.getElementById("viewer-tab").appendChild(a)
 
     let bar = document.createElement("div")
     bar.classList.add("viewer-main-bar")
@@ -84,12 +108,33 @@ function creatViewerTab(imgFile) {
     imgDiv.appendChild(img)
 
     let main = document.createElement("div")
+    main.id = imgFile + "-tabcontent"
     main.classList.add("viewer-main")
     main.appendChild(bar)
     main.appendChild(imgDiv)
     document.getElementById("viewer").appendChild(main)
 
-    updataViewerStatus(a)
+    let a = document.createElement("a")
+    a.id = imgFile + "-tablink"
+    let imgName = path.basename(imgFile)
+    a.innerHTML = `${imgName}<span class="close">x</span>`
+    a.getElementsByClassName('close')[0].addEventListener("click", function (e) {
+        e.preventDefault()
+        e.stopPropagation()
+        let imgFile = this.parentNode.id.replace("-tablink", "")
+        console.log(`del ${imgFile}`)
+        delViewerTab(imgFile)
+        activateLastTab()
+    })
+    a.classList.add("viewer-tab")
+    a.classList.add("active")
+    a.onclick = function (e) {
+        e.preventDefault()
+        activateTab(this)
+    }
+    console.log(a)
+    document.getElementById("viewer-tab").appendChild(a)
+    activateTab(a)
 }
 
 
@@ -138,31 +183,10 @@ function zoomImage(image, container, scale = 1) {
 }
 
 
-document.getElementById("task-run").addEventListener('click', (event) => {
-    event.preventDefault()
-    console.log('task-run clicked!')
-    let image = getActiveImg()
-    let imgFile;
-    if (image.src.startsWith("file:")) {
-        imgFile = image.src.replace("file:///", "")
-    } else if (image.src.startsWith("data:")) {
-        imgFile = path.join(__dirname, 'logs/_input.png')
-        let base64Data = image.src.replace(/^data:image\/png;base64,/, "");
-        fs.writeFile(imgFile, base64Data, 'base64', function (err) {
-            if (err) {
-                console.log(err);
-            }
-        });
-    }
-    console.log(imgFile)
-    ipcRenderer.send("model-run", imgFile)
-})
-
-
 document.getElementById("zoom-level").addEventListener('change', (event) => {
     var index = event.target.selectedIndex
-    const container = document.getElementsByClassName("viewer-main-img")[0]
-    let image = getActiveImg()
+    const container = getActiveTabContainer()
+    let image = getActiveTabImg()
     if (index === 0) {
         image.classList.add('scale-to-fit');
         image.classList.remove('pixelated');
@@ -176,15 +200,27 @@ document.getElementById("zoom-level").addEventListener('change', (event) => {
 })
 
 
-ipcRenderer.on('model-run-finished', (event, data) => {
-    console.log("model-run-finished")
-    let image = getActiveImg()
-    image.src = data
+document.getElementById("task-run").addEventListener('click', (event) => {
+    event.preventDefault()
+    console.log('task-run clicked!')
 
-    let bar = getActiveBar()
-    removeByVal(viewerNames, bar.innerHTML)
-    bar.innerHTML += "^_^"
-    viewerNames.push(bar.innerHTML)
+    let imgFile
+    let image = getActiveTabImg()
+    if (image.src.startsWith("file:")) {
+        imgFile = image.src.replace("file:///", "")
+    } else if (image.src.startsWith("data:")) {
+        imgFile = path.join(__dirname, 'logs/_input.png')
+        writePng(image.src, imgFile)
+    }
+    console.log(imgFile)
+    ipcRenderer.send("model-run", imgFile)
+})
+
+
+ipcRenderer.on('model-run-finished', (event, file) => {
+    console.log("model-run-finished")
+    creatViewerTab(file)
+    getActiveTabImg().src = readPng(file)
 })
 
 

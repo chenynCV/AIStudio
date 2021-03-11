@@ -57,9 +57,7 @@ ipcMain.on('model-run', (event, imgFile) => {
     console.log('processing ' + imgFile)
     let outFile =  path.join(__dirname, '../logs/_out.png')
     let cb  = function() {
-        let _img = fs.readFileSync(outFile).toString('base64')
-        let _imgSrc = "data:image/png;base64," + _img
-        event.sender.send('model-run-finished', _imgSrc)  
+        event.sender.send('model-run-finished', outFile)  
     }
     engine.run(imgFile).then(outputTensor => {
         saveImg(outputTensor, outFile, cb)
