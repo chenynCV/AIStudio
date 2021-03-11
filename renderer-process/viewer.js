@@ -64,6 +64,7 @@ function activateTab(tablink) {
             tabcontent[i].classList.add("no-display")
         }
     }
+    updateHammerInfo(getActiveTabImg())
 }
 
 function activateLastTab() {
