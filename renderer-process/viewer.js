@@ -16,36 +16,26 @@ function getActiveTabIndex() {
 
 
 function getActiveTabContainer() {
-    let image = document.getElementsByClassName("viewer-main-img")[getActiveTabIndex()]
-    return image
+    let container = document.getElementsByClassName("viewer-main-container")[getActiveTabIndex()]
+    return container
 }
 
 
 function getActiveTabImg() {
-    let image = document.getElementsByClassName("viewer-main-img")[getActiveTabIndex()].children[0]
-    return image
-}
-
-
-function getActiveTabImgOri() {
-    let image = document.getElementsByClassName("viewer-main-img")[getActiveTabIndex()].children[1]
-    return image
-}
-
-
-function getActiveTabBar() {
-    let image = document.getElementsByClassName("viewer-main-bar")[getActiveTabIndex()]
+    let image = getActiveTabContainer().lastChild
     return image
 }
 
 
 function activateTab(tablink) {
     let tablinks = document.getElementsByClassName("viewer-tab")
-    let tabcontent = document.getElementsByClassName("viewer-main")
+    let tabcontent = document.getElementsByClassName("viewer-main-container")
     for (var i = 0; i < tablinks.length; i++) {
         if (tablinks[i] === tablink) {
             tablinks[i].classList.add("active")
             tabcontent[i].classList.remove("no-display")
+            let imgFile = tablinks[i].id.replace("-tablink", "")
+            document.getElementById("viewer-main-bar").innerHTML = imgFile
             console.log("activating ...")
             console.log(tablinks[i])
         } else {
@@ -82,10 +72,6 @@ function creatViewerTab(imgFile) {
         return
     }
 
-    let bar = document.createElement("div")
-    bar.classList.add("viewer-main-bar")
-    bar.innerHTML = imgFile
-
     let img = document.createElement("img")
     img.classList.add("img-center")
     img.classList.add("scale-to-fit")
@@ -93,16 +79,11 @@ function creatViewerTab(imgFile) {
     img.onload = function () {
         updateHammerInfo(this)
     }
-    let imgDiv = document.createElement("div")
-    imgDiv.classList.add("viewer-main-img")
-    imgDiv.appendChild(img)
 
-    let main = document.createElement("div")
-    main.id = imgFile + "-tabcontent"
-    main.classList.add("viewer-main")
-    main.appendChild(bar)
-    main.appendChild(imgDiv)
-    document.getElementById("viewer").appendChild(main)
+    let container = document.createElement("div")
+    container.classList.add("viewer-main-container")
+    container.appendChild(img)
+    document.getElementById("viewer-main").appendChild(container)
 
     let a = document.createElement("a")
     a.id = imgFile + "-tablink"
