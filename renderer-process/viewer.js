@@ -6,9 +6,11 @@ import { writePng, readPng } from './utils.js'
 
 
 function getActiveTabIndex() {
-    let tablinks = document.getElementsByClassName("viewer-tab")
+    console.log('getActiveTabIndex:')
+    let tablinks = document.getElementById("viewer-tab").getElementsByTagName("a")
     for (var i = 0; i < tablinks.length; i++) {
         if (tablinks[i].classList.contains("active")) {
+            console.log(i)
             return i
         }
     }
@@ -22,19 +24,34 @@ function getActiveTabContainer() {
 
 
 function getActiveTabImg() {
-    let image = getActiveTabContainer().lastChild
-    return image
+    let imgs = getActiveTabContainer().children
+    for (var i = 0; i < imgs.length; i++) {
+        if (!imgs[i].classList.contains("no-display")) {
+            return imgs[i]
+        }
+    }
+    return imgs[0]
+}
+
+
+function getTablinkByName(name) {
+    let tablinks = document.getElementById("viewer-tab").getElementsByTagName("a")
+    for (var i = 0; i < tablinks.length; i++) {
+        if (tablinks[i].id.includes(path.normalize(name))) {
+            return tablinks[i]
+        }
+    }
 }
 
 
 function activateTab(tablink) {
-    let tablinks = document.getElementsByClassName("viewer-tab")
+    let tablinks = document.getElementById("viewer-tab").getElementsByTagName("a")
     let tabcontent = document.getElementsByClassName("viewer-main-container")
     for (var i = 0; i < tablinks.length; i++) {
         if (tablinks[i] === tablink) {
             tablinks[i].classList.add("active")
             tabcontent[i].classList.remove("no-display")
-            let imgFile = tablinks[i].id.replace("-tablink", "")
+            let imgFile = tablinks[i].id.replace("tablink#", "")
             document.getElementById("viewer-main-bar").innerHTML = imgFile
             console.log("activating ...")
             console.log(tablinks[i])
@@ -46,29 +63,37 @@ function activateTab(tablink) {
     updateHammerInfo(getActiveTabImg())
 }
 
+
 function activateLastTab() {
-    let tablinks = document.getElementsByClassName("viewer-tab")
+    let tablinks = document.getElementById("viewer-tab").getElementsByTagName("a")
     activateTab(tablinks[tablinks.length - 1])
 }
 
 
-function delViewerTab(imgFile) {
-    if (document.getElementById(imgFile + "-tablink")) {
-        console.log('del tablink:' + imgFile)
-        let tablink = document.getElementById(imgFile + "-tablink")
+function delViewerTab(name) {
+    if (document.getElementById("tablink#" + name)) {
+        console.log('deleting tablink:' + name)
+        let tablink = document.getElementById("tablink#" + name)
         tablink.parentNode.removeChild(tablink)
     }
-    if (document.getElementById(imgFile + "-tabcontent")) {
-        console.log('del tabcontent:' + imgFile)
-        let tabcontent = document.getElementById(imgFile + "-tabcontent")
+    if (document.getElementById("container#" + name)) {
+        console.log('deleting tabcontent:' + name)
+        let tabcontent = document.getElementById("container#" + name)
         tabcontent.parentNode.removeChild(tabcontent)
     }
 }
 
 
 function creatViewerTab(imgFile) {
-    if (document.getElementById(imgFile + "-tablink")) {
-        activateTab(document.getElementById(imgFile + "-tablink"))
+    let tablink = getTablinkByName(imgFile)
+    if (tablink) {
+        activateTab(tablink)
+        let container = getActiveTabContainer()
+        let imgs = container.children
+        imgs[0].classList.remove("no-display")
+        if (imgs.length > 1) {
+            imgs[1].classList.add("no-display")
+        }
         return
     }
 
@@ -81,18 +106,19 @@ function creatViewerTab(imgFile) {
     }
 
     let container = document.createElement("div")
+    container.id = "container#" + imgFile
     container.classList.add("viewer-main-container")
     container.appendChild(img)
     document.getElementById("viewer-main").appendChild(container)
 
     let a = document.createElement("a")
-    a.id = imgFile + "-tablink"
+    a.id =  "tablink#" + imgFile
     let imgName = path.basename(imgFile)
     a.innerHTML = `${imgName}<span class="close">x</span>`
     a.getElementsByClassName('close')[0].addEventListener("click", function (e) {
         e.preventDefault()
         e.stopPropagation()
-        let imgFile = this.parentNode.id.replace("-tablink", "")
+        let imgFile = this.parentNode.id.replace("tablink#", "")
         console.log(`del ${imgFile}`)
         delViewerTab(imgFile)
         activateLastTab()
@@ -103,9 +129,32 @@ function creatViewerTab(imgFile) {
         e.preventDefault()
         activateTab(this)
     }
-    console.log(a)
     document.getElementById("viewer-tab").appendChild(a)
+    
     activateTab(a)
+}
+
+
+function updateViewerTab(outputFile) {
+    let container = getActiveTabContainer()
+    let imgs = container.children
+    for (var i = 0; i < imgs.length; i++) {
+        imgs[i].classList.add("no-display")
+    }
+
+    if (imgs.length > 1) {
+        imgs[imgs.length - 1].src = readPng(outputFile)
+        imgs[1].classList.remove("no-display")
+    } else {
+        let img = document.createElement("img")
+        img.classList.add("img-center")
+        img.classList.add("scale-to-fit")
+        img.src = outputFile
+        img.onload = function () {
+            updateHammerInfo(this)
+        }
+        container.appendChild(img)
+    }
 }
 
 
@@ -188,10 +237,9 @@ document.getElementById("task-run").addEventListener('click', (event) => {
 })
 
 
-ipcRenderer.on('model-run-finished', (event, file) => {
+ipcRenderer.on('model-run-finished', (event, outputFile) => {
     console.log("model-run-finished")
-    creatViewerTab(file)
-    getActiveTabImg().src = readPng(file)
+    updateViewerTab(outputFile)
 })
 
 

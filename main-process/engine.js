@@ -53,14 +53,14 @@ ipcMain.on('model-selected', (event, index) => {
     console.log(engine)
 })
 
-ipcMain.on('model-run', (event, imgFile) => {
-    console.log('processing ' + imgFile)
-    let outFile =  path.join(__dirname, '../logs/_out.png')
+ipcMain.on('model-run', (event, inputFile) => {
+    console.log('processing ' + inputFile)
+    let outputFile =  path.join(__dirname, '../logs/_out.png')
     let cb  = function() {
-        event.sender.send('model-run-finished', outFile)  
+        event.sender.send('model-run-finished', outputFile)  
     }
-    engine.run(imgFile).then(outputTensor => {
-        saveImg(outputTensor, outFile, cb)
+    engine.run(inputFile).then(outputTensor => {
+        saveImg(outputTensor, outputFile, cb)
     }).catch(err => {
         console.log(err)
     })

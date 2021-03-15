@@ -5,9 +5,9 @@ var Jimp = require('jimp')
 
 ipcMain.on('binarization', (event, threshould, imgFile) => {
     console.log('processing ' + imgFile)
-    let outFile = path.join(__dirname, '../logs/_out.png')
+    let outputFile = path.join(__dirname, '../logs/_out.png')
     let cb = function () {
-        event.sender.send('binarization-finished', outFile)
+        event.sender.send('binarization-finished', outputFile)
     }
     Jimp.read(imgFile)
         .then(img => {
@@ -29,8 +29,8 @@ ipcMain.on('binarization', (event, threshould, imgFile) => {
             //     } else {
             //         this.bitmap.data[idx + 2] = 0
             //     }
-            // }).write(outFile, cb)
-            img.greyscale().write(outFile, cb)
+            // }).write(outputFile, cb)
+            img.greyscale().write(outputFile, cb)
         })
         .catch(err => {
             console.error(err);
