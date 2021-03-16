@@ -26,6 +26,7 @@
     "electron": "^11.3.0"
   },
   "dependencies": {
+    "xmldom": "^0.5.0",
     "electron-squirrel-startup": "^1.0.0",
     "glob": "^7.1.6",
     "jimp": "^0.16.1",
