@@ -1,0 +1,30 @@
+{
+    "name": "style-candy",
+    "displayName": "Style Candy",
+    "description": "The model uses the method described in Perceptual Losses for Real-Time Style Transfer and Super-Resolution along with Instance Normalization.",
+    "categories": [
+        "Style"
+    ],
+    "keywords": [
+        "style",
+        "candy",
+        "gan"
+    ],
+    "version": "1.0.0",
+    "publisher": "vscode",
+    "icon": "icon.png",
+    "license": "MIT",
+    "main": "./engine.js",
+    "contributes": {
+        "hammer-model-info-table": {
+            "Params": "6.6MB",
+            "Flops": "Nan",
+            "Description": "Style Candy",
+            "Contributors": "Jennifer Wang"
+        }
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/onnx/models/tree/master/vision/style_transfer/fast_neural_style"
+    }
+}
