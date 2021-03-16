@@ -37,7 +37,11 @@
 	background-color: #777;
 }
 
-.sidepanel-bar #task-run {
+.sidepanel-bar #model-run {
+	right: 10px;
+}
+
+.sidepanel-bar #magic-reset {
 	right: 10px;
 }
 

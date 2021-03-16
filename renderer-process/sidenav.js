@@ -13,23 +13,85 @@ for (var i = 0; i < sidenav_items.length; i++) {
   });
 }
 
+
+const hammer = document.getElementsByClassName("hammer-container")[0]
+const magic = document.getElementsByClassName("magic-container")[0]
+const modelZoo = document.getElementsByClassName("modelZoo-container")[0]
+
+
+function activateHammer() {
+  hammer.classList.remove("no-display")
+  let btns = document.getElementsByClassName("sidepanel-button-hammer")
+  for (let i = 0; i < btns.length; i++) {
+    btns[i].classList.remove("no-display")
+  }
+}
+
+
+function deactivateHammer() {
+  hammer.classList.add("no-display")
+  let btns = document.getElementsByClassName("sidepanel-button-hammer")
+  for (let i = 0; i < btns.length; i++) {
+    btns[i].classList.add("no-display")
+  }
+}
+
+
+function activateMagic() {
+  magic.classList.remove("no-display")
+  let btns = document.getElementsByClassName("sidepanel-button-magic")
+  for (let i = 0; i < btns.length; i++) {
+    btns[i].classList.remove("no-display")
+  }
+}
+
+
+function deactivateMagic() {
+  magic.classList.add("no-display")
+  let btns = document.getElementsByClassName("sidepanel-button-magic")
+  for (let i = 0; i < btns.length; i++) {
+    btns[i].classList.add("no-display")
+  }
+}
+
+
+function activateModelZoo() {
+  modelZoo.classList.remove("no-display")
+  let btns = document.getElementsByClassName("sidepanel-button-modelZoo")
+  for (let i = 0; i < btns.length; i++) {
+    btns[i].classList.remove("no-display")
+  }
+}
+
+
+function deactivateModelZoo() {
+  modelZoo.classList.add("no-display")
+  let btns = document.getElementsByClassName("sidepanel-button-modelZoo")
+  for (let i = 0; i < btns.length; i++) {
+    btns[i].classList.add("no-display")
+  }
+}
+
+
 document.getElementById("hammer").addEventListener('click', (event) => {
   document.getElementById("sidepanel-title").innerHTML = 'HAMMER'
-  document.getElementsByClassName("hammer-container")[0].classList.remove("no-display")
-  document.getElementsByClassName("magic-container")[0].classList.add("no-display")
-  document.getElementsByClassName("modelZoo-container")[0].classList.add("no-display")
+  activateHammer()
+  deactivateMagic()
+  deactivateModelZoo()
 })
+
 
 document.getElementById("magic").addEventListener('click', (event) => {
   document.getElementById("sidepanel-title").innerHTML = 'MAGIC'
-  document.getElementsByClassName("magic-container")[0].classList.remove("no-display")
-  document.getElementsByClassName("hammer-container")[0].classList.add("no-display")
-  document.getElementsByClassName("modelZoo-container")[0].classList.add("no-display")
+  deactivateHammer()
+  activateMagic()
+  deactivateModelZoo()
 })
+
 
 document.getElementById("modelZoo").addEventListener('click', (event) => {
   document.getElementById("sidepanel-title").innerHTML = 'MODEL ZOO'
-  document.getElementsByClassName("modelZoo-container")[0].classList.remove("no-display")
-  document.getElementsByClassName("hammer-container")[0].classList.add("no-display")
-  document.getElementsByClassName("magic-container")[0].classList.add("no-display")
+  deactivateHammer()
+  deactivateMagic()
+  activateModelZoo()
 })

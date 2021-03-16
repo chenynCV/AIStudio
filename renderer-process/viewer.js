@@ -1,16 +1,13 @@
-const { ipcRenderer } = require('electron')
 const path = require('path')
 import { updateHammerInfo } from './hammer.js'
 import { updateAppLayout } from './layout.js'
-import { writePng, readPng } from './utils.js'
+import { readPng } from './utils.js'
 
 
 function getActiveTabIndex() {
-    console.log('getActiveTabIndex:')
     let tablinks = document.getElementById("viewer-tab").getElementsByTagName("a")
     for (var i = 0; i < tablinks.length; i++) {
         if (tablinks[i].classList.contains("active")) {
-            console.log(i)
             return i
         }
     }
@@ -23,13 +20,19 @@ function getActiveTabContainer() {
 }
 
 
-function getActiveTabImg() {
+function getActiveTabDisplay() {
     let imgs = getActiveTabContainer().children
     for (var i = 0; i < imgs.length; i++) {
         if (!imgs[i].classList.contains("no-display")) {
             return imgs[i]
         }
     }
+    return imgs[0]
+}
+
+
+function getActiveTabInput() {
+    let imgs = getActiveTabContainer().children
     return imgs[0]
 }
 
@@ -60,7 +63,7 @@ function activateTab(tablink) {
             tabcontent[i].classList.add("no-display")
         }
     }
-    updateHammerInfo(getActiveTabImg())
+    updateHammerInfo(getActiveTabDisplay())
 }
 
 
@@ -112,7 +115,8 @@ function creatViewerTab(imgFile) {
     document.getElementById("viewer-main").appendChild(container)
 
     let a = document.createElement("a")
-    a.id =  "tablink#" + imgFile
+    a.id = "tablink#" + imgFile
+    a.href = "#" 
     let imgName = path.basename(imgFile)
     a.innerHTML = `${imgName}<span class="close">x</span>`
     a.getElementsByClassName('close')[0].addEventListener("click", function (e) {
@@ -130,21 +134,36 @@ function creatViewerTab(imgFile) {
         activateTab(this)
     }
     document.getElementById("viewer-tab").appendChild(a)
-    
+
     activateTab(a)
 }
 
 
-function updateViewerTab(outputFile) {
+function showActiveTabInput() {
     let container = getActiveTabContainer()
     let imgs = container.children
-    for (var i = 0; i < imgs.length; i++) {
+    imgs[0].classList.remove("no-display")
+    for (var i = 1; i < imgs.length; i++) {
         imgs[i].classList.add("no-display")
     }
+}
+
+
+function showTabOutput(container) {
+    let imgs = container.children
+    for (var i = 0; i < imgs.length - 1; i++) {
+        imgs[i].classList.add("no-display")
+    }
+    imgs[imgs.length - 1].classList.remove("no-display")
+}
+
+
+function setActiveTabOutput(outputFile) {
+    let container = getActiveTabContainer()
+    let imgs = container.children
 
     if (imgs.length > 1) {
         imgs[imgs.length - 1].src = readPng(outputFile)
-        imgs[1].classList.remove("no-display")
     } else {
         let img = document.createElement("img")
         img.classList.add("img-center")
@@ -155,6 +174,8 @@ function updateViewerTab(outputFile) {
         }
         container.appendChild(img)
     }
+
+    showTabOutput(container)
 }
 
 
@@ -206,7 +227,7 @@ function zoomImage(image, container, scale = 1) {
 document.getElementById("zoom-level").addEventListener('change', (event) => {
     var index = event.target.selectedIndex
     const container = getActiveTabContainer()
-    let image = getActiveTabImg()
+    let image = getActiveTabDisplay()
     if (index === 0) {
         image.classList.add('scale-to-fit');
         image.classList.remove('pixelated');
@@ -220,27 +241,4 @@ document.getElementById("zoom-level").addEventListener('change', (event) => {
 })
 
 
-document.getElementById("task-run").addEventListener('click', (event) => {
-    event.preventDefault()
-    console.log('task-run clicked!')
-
-    let imgFile
-    let image = getActiveTabImg()
-    if (image.src.startsWith("file:")) {
-        imgFile = image.src.replace("file:///", "")
-    } else if (image.src.startsWith("data:")) {
-        imgFile = path.join(__dirname, 'logs/_input.png')
-        writePng(image.src, imgFile)
-    }
-    console.log(imgFile)
-    ipcRenderer.send("model-run", imgFile)
-})
-
-
-ipcRenderer.on('model-run-finished', (event, outputFile) => {
-    console.log("model-run-finished")
-    updateViewerTab(outputFile)
-})
-
-
-export { updateViwerPanel, getActiveTabImg, creatViewerTab };
+export { updateViwerPanel, getActiveTabDisplay, getActiveTabInput, setActiveTabOutput, showActiveTabInput };

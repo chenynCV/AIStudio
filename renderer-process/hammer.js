@@ -1,4 +1,7 @@
 const { ipcRenderer } = require('electron')
+const path = require('path')
+import { writePng } from './utils.js'
+import { getActiveTabDisplay, setActiveTabOutput } from './viewer.js'
 
 var modelPackages = [];
 
@@ -63,5 +66,29 @@ document.getElementById("hammer-model-select").addEventListener('change', (event
     updateModelInfo(modelInfo)
     ipcRenderer.send('model-selected', index)
 })
+
+
+document.getElementById("model-run").addEventListener('click', (event) => {
+    event.preventDefault()
+    console.log('model-run clicked!')
+
+    let imgFile
+    let image = getActiveTabDisplay()
+    if (image.src.startsWith("file:")) {
+        imgFile = image.src.replace("file:///", "")
+    } else if (image.src.startsWith("data:")) {
+        imgFile = path.join(__dirname, 'logs/_input.png')
+        writePng(image.src, imgFile)
+    }
+    console.log(imgFile)
+    ipcRenderer.send("model-run", imgFile)
+})
+
+
+ipcRenderer.on('model-run-finished', (event, outputFile) => {
+    console.log("model-run-finished")
+    setActiveTabOutput(outputFile)
+})
+
 
 export { updateHammerInfo, updateModelInfo };

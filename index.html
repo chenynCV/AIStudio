@@ -38,7 +38,10 @@
     <div class="sidepanel" id="sidepanel">
       <div class="sidepanel-bar">
         <label id="sidepanel-title">HAMMER</label>
-        <a id="task-run" href="#" style="background-image: url('assets/img/play.svg');"></a>
+        <a class="sidepanel-button-hammer" id="model-run" href="#"
+          style="background-image: url('assets/img/play.svg');"></a>
+        <a class="sidepanel-button-magic no-display" id="magic-reset" href="#"
+          style="background-image: url('assets/img/redo-gray.svg');"></a>
       </div>
 
       <div class="sidepanel-main">
@@ -83,25 +86,15 @@
         </div>
 
         <div class="magic-container no-display">
-          <table id='magic-flag-table'>
-            <tbody>
-              <tr>
-                <td>Auto Update</td>
-                <td>
-                  <label class="magic-switch">
-                    <input type="checkbox" id="magic-auto">
-                    <span class="slider round"></span>
-                  </label>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
           <table id='magic-binarization-table'>
             <tbody class="magic-folder">
               <tr>
-                <td colspan="2">
-                  <label>Binarization</label>
+                <td><label>Binarization</label></td>
+                <td>
+                  <label class="magic-switch">
+                    <input type="checkbox" id="magic-switch-binarization" checked=false>
+                    <span class="slider round"></span>
+                  </label>
                 </td>
               </tr>
             </tbody>
@@ -112,6 +105,87 @@
                   <div class="tooltip">
                     <input class="tooltip" type="range" min="0" max="255" value="128" id="binarization-slider">
                     <span class="tooltiptext">128</span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table id='magic-filter-table'>
+            <tbody class="magic-folder">
+              <tr>
+                <td colspan="2">
+                  <label>Filter</label>
+                </td>
+              </tr>
+            </tbody>
+            <tbody class="hide">
+              <tr>
+                <td>Brightness</td>
+                <td>
+                  <div class="tooltip">
+                    <input class="tooltip" type="range" min="0" max="10" step="0.01" value="1" id="brightness-slider">
+                    <span class="tooltiptext">1</span>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td>Contrast</td>
+                <td>
+                  <div class="tooltip">
+                    <input class="tooltip" type="range" min="0" max="10" step="0.01" value="1" id="contrast-slider">
+                    <span class="tooltiptext">1</span>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td>Hue Rotate</td>
+                <td>
+                  <div class="tooltip">
+                    <input class="tooltip" type="range" min="0" max="360" step="1" value="0" id="hue-rotate-slider">
+                    <span class="tooltiptext">0</span>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td>Invert</td>
+                <td>
+                  <div class="tooltip">
+                    <input class="tooltip" type="range" min="0" max="1" step="0.01" value="0" id="invert-slider">
+                    <span class="tooltiptext">0</span>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td>Saturate</td>
+                <td>
+                  <div class="tooltip">
+                    <input class="tooltip" type="range" min="0" max="10" step="0.01" value="1" id="saturate-slider">
+                    <span class="tooltiptext">1</span>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td>Sepia</td>
+                <td>
+                  <div class="tooltip">
+                    <input class="tooltip" type="range" min="0" max="1" step="0.01" value="0" id="sepia-slider">
+                    <span class="tooltiptext">0</span>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td>Grayscale</td>
+                <td>
+                  <div class="tooltip">
+                    <input class="tooltip" type="range" min="0" max="1" step="0.01" value="0" id="grayscale-slider">
+                    <span class="tooltiptext">0</span>
                   </div>
                 </td>
               </tr>
