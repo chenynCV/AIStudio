@@ -81,7 +81,6 @@ document.getElementById("magic-reset").addEventListener('click', (event) => {
 
 
 document.getElementById("binarization-switch").addEventListener('click', (event) => {
-    event.preventDefault()
     console.log('binarization-switch clicked!')
     let imgFile = getCurrentImgFile()
     if (imgFile) {
