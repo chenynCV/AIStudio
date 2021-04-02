@@ -1,4 +1,5 @@
 const fs = require('fs')
+const path = require('path')
 
 
 function writePng(data, imgFile) {
@@ -18,4 +19,10 @@ function readPng(imgFile) {
 }
 
 
-export { writePng, readPng };
+function stdPath(filePath) {
+    filePath = filePath.split(path.sep).join('/')
+    return filePath
+}
+
+
+export { writePng, readPng, stdPath };

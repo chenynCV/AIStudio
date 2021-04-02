@@ -1,7 +1,10 @@
 const path = require('path')
+import { tabAttributes } from './globalVars.js'
 import { updateHammerInfo } from './hammer.js'
+import { defaultMagicParam, setMagic } from './magic.js'
 import { updateAppLayout } from './layout.js'
-import { readPng } from './utils.js'
+import { readPng, stdPath } from './utils.js'
+
 
 
 function getActiveTabIndex() {
@@ -32,15 +35,29 @@ function getActiveTabDisplay() {
 
 
 function getActiveTabInput() {
-    let imgs = getActiveTabContainer().children
-    return imgs[0]
+    if (getActiveTabContainer()) {
+        let imgs = getActiveTabContainer().children
+        return imgs[0]
+    }
+}
+
+
+function getCurrentImgFile() {
+    if (getActiveTabInput()) {
+        let imgFile
+        let image = getActiveTabInput()
+        if (image.src.startsWith("file:")) {
+            imgFile = image.src.replace("file:///", "")
+        }
+        return imgFile
+    }
 }
 
 
 function getTablinkByName(name) {
     let tablinks = document.getElementById("viewer-tab").getElementsByTagName("a")
     for (var i = 0; i < tablinks.length; i++) {
-        if (tablinks[i].id.includes(path.normalize(name))) {
+        if (tablinks[i].id.includes(stdPath(name))) {
             return tablinks[i]
         }
     }
@@ -100,6 +117,9 @@ function creatViewerTab(imgFile) {
         return
     }
 
+    tabAttributes[imgFile] = {}
+    tabAttributes[imgFile].magic = defaultMagicParam()
+
     let img = document.createElement("img")
     img.classList.add("img-center")
     img.classList.add("scale-to-fit")
@@ -116,7 +136,7 @@ function creatViewerTab(imgFile) {
 
     let a = document.createElement("a")
     a.id = "tablink#" + imgFile
-    a.href = "#" 
+    a.href = "#"
     let imgName = path.basename(imgFile)
     a.innerHTML = `${imgName}<span class="close">x</span>`
     a.getElementsByClassName('close')[0].addEventListener("click", function (e) {
@@ -132,6 +152,10 @@ function creatViewerTab(imgFile) {
     a.onclick = function (e) {
         e.preventDefault()
         activateTab(this)
+        let imgFile = getCurrentImgFile()
+        if (imgFile) {
+            setMagic(tabAttributes[imgFile].magic)
+        }
     }
     document.getElementById("viewer-tab").appendChild(a)
 
@@ -182,7 +206,7 @@ function setActiveTabOutput(outputFile) {
 function updateViwerPanel(filePaths) {
     var ul = document.getElementById("selected-files")
     for (let i = 0; i < filePaths.length; i++) {
-        let filePath = filePaths[i]
+        let filePath = stdPath(filePaths[i])
         var li = document.createElement("ViwerPanel-line-" + i.toString())
         li.innerHTML = `<li>${filePath}<span class="close">x</span></li>`
         li.getElementsByClassName('close')[0].addEventListener("click", function () {
@@ -193,9 +217,10 @@ function updateViwerPanel(filePaths) {
             const regex = /\<li\>(.*)\<span/i
             const found = this.innerHTML.match(regex)
             if (found) {
-                let imgFile = found[1]
+                let imgFile = stdPath(found[1])
                 console.log(imgFile)
                 creatViewerTab(imgFile)
+                setMagic(tabAttributes[imgFile].magic)
             }
         })
         ul.appendChild(li)
@@ -241,4 +266,4 @@ document.getElementById("zoom-level").addEventListener('change', (event) => {
 })
 
 
-export { updateViwerPanel, getActiveTabDisplay, getActiveTabInput, setActiveTabOutput, showActiveTabInput };
+export { updateViwerPanel, getActiveTabDisplay, getActiveTabInput, setActiveTabOutput, showActiveTabInput, getCurrentImgFile };
