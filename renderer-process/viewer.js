@@ -2,7 +2,6 @@ const path = require('path')
 import { tabAttributes } from './globalVars.js'
 import { updateHammerInfo } from './hammer.js'
 import { defaultMagicParam, setMagic } from './magic.js'
-import { updateAppLayout } from './layout.js'
 import { readPng, stdPath } from './utils.js'
 
 
@@ -203,31 +202,6 @@ function setActiveTabOutput(outputFile) {
 }
 
 
-function updateViwerPanel(filePaths) {
-    var ul = document.getElementById("selected-files")
-    for (let i = 0; i < filePaths.length; i++) {
-        let filePath = stdPath(filePaths[i])
-        var li = document.createElement("ViwerPanel-line-" + i.toString())
-        li.innerHTML = `<li>${filePath}<span class="close">x</span></li>`
-        li.getElementsByClassName('close')[0].addEventListener("click", function () {
-            this.parentNode.parentNode.removeChild(this.parentNode);
-            updateAppLayout();
-        })
-        li.addEventListener("click", function () {
-            const regex = /\<li\>(.*)\<span/i
-            const found = this.innerHTML.match(regex)
-            if (found) {
-                let imgFile = stdPath(found[1])
-                console.log(imgFile)
-                creatViewerTab(imgFile)
-                setMagic(tabAttributes[imgFile].magic)
-            }
-        })
-        ul.appendChild(li)
-    }
-}
-
-
 function zoomImage(image, container, scale = 1) {
     if (scale >= 3) {
         image.classList.add('pixelated');
@@ -266,4 +240,4 @@ document.getElementById("zoom-level").addEventListener('change', (event) => {
 })
 
 
-export { updateViwerPanel, getActiveTabDisplay, getActiveTabInput, setActiveTabOutput, showActiveTabInput, getCurrentImgFile };
+export { creatViewerTab, getActiveTabDisplay, getActiveTabInput, setActiveTabOutput, showActiveTabInput, getCurrentImgFile };
