@@ -43,11 +43,11 @@ function getActiveTabInput() {
 
 function getCurrentImgFile() {
     if (getActiveTabInput()) {
-        let imgFile
-        let image = getActiveTabInput()
-        if (image.src.startsWith("file:")) {
-            imgFile = image.src.replace("file:///", "")
+        let imgFile = getActiveTabInput().src
+        if (imgFile.startsWith("file:")) {
+            imgFile = imgFile.replace("file:///", "")
         }
+        imgFile = decodeURI(imgFile)
         return imgFile
     }
 }
